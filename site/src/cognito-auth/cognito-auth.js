@@ -40,7 +40,7 @@ class CognitoAuth {
   }
 
   onLogin = (currentUser) => {
-    this.config.onLogin && this.config.onLogin(this, currentUser);
+    this.config.onLogin && this.config.onLogin(currentUser);
   }
 
   setInitialCredentials = () => {
@@ -76,6 +76,29 @@ class CognitoAuth {
       this.trace("AWS.config.credentials constructed", window.AWS.config.credentials);
       this.onLogin(this.currentUser);
     });
+  }
+
+  logout = () => {
+    this.trace("CognitoAuth.logout()");
+    return new Promise((resolve, reject) => {
+      if (!this.currentUser) {
+        reject("no current user: cannot logout");
+        return;
+      }
+      this.currentUser.signOut();
+      this.currentUser = null;
+      this.setDefaultCredentials();
+      resolve();
+      this.trace("success");
+    });
+  }
+
+  setDefaultCredentials = () => {
+    this.trace("CognitoAuth.setDefaultCredentials()");
+    window.AWS.config.credentials = new window.AWS.CognitoIdentityCredentials({
+      IdentityPoolId: this.config.AWS_ID_POOL_ID,
+    });
+    this.onLogout();
   }
 }
 

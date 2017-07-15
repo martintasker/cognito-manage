@@ -17,10 +17,9 @@ const store = createStore(appReducer);
 const config = {
   ...AWSconfig,
   TRACE: true,
-  onLogin: (session, user) => {
+  onLogin: (user) => {
     console.log("logged in", user);
     store.dispatch(actions.authUserLogin(user.username, {}));
-    store.dispatch(actions.authUserSetSession(session));
   },
   onLogout: () => {
     console.log("logged out");
@@ -29,6 +28,7 @@ const config = {
 };
 
 var cognitoAuth = new CognitoAuth(config);
+store.dispatch(actions.authUserSetSession(cognitoAuth));
 
 const App = () => {
   return (

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 
+import UserAuthLogin from './UserAuthLogin';
+import UserAuthLogout from './UserAuthLogout';
+
 import actions from '../app.actions';
 
 const mapStateToProps = (state) => {
@@ -32,15 +35,7 @@ class UserAuthUi extends Component {
     e.preventDefault();
   }
 
-  login = (e) => {
-    e.preventDefault();
-  }
-
   completeLogin = (e) => {
-    e.preventDefault();
-  }
-
-  logout = (e) => {
     e.preventDefault();
   }
 
@@ -185,15 +180,7 @@ class UserAuthUi extends Component {
             Login
           </div>
           <div className="col-xs-10">
-            <form>
-              <fieldset disabled={isLoggedIn}>
-                <div className="form-group">
-                  <input type="text" name="username" placeholder="User name" required />
-                  <input type="password" name="password" placeholder="Password" required />
-                  <button onClick={this.login} className="btn btn-primary" type="submit">Login</button>
-                </div>
-              </fieldset>
-            </form>
+            <UserAuthLogin/>
           </div>
 
           <div className="col-xs-2">
@@ -214,11 +201,7 @@ class UserAuthUi extends Component {
             Logout
           </div>
           <div className="col-xs-10">
-            <form>
-              <div className="form-group">
-                <button onClick={this.logout} disabled={!isLoggedIn} className="btn btn-primary" type="submit">Logout</button>
-              </div>
-            </form>
+            <UserAuthLogout/>
           </div>
         </div>
 
