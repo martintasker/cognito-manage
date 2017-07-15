@@ -9,8 +9,11 @@
     "amazon-cognito-identity-js": "^1.19.0",
     "aws-sdk": "^2.85.0",
     "bootstrap": "^3.3.7",
+    "immutable": "^3.8.1",
     "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react-dom": "^15.6.1",
+    "react-redux": "^5.0.5",
+    "redux": "^3.7.2"
   },
   "scripts": {
     "start": "react-scripts start",

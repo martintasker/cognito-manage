@@ -1,4 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
+
+import {createStore} from 'redux';
+import appReducer from './app.reducer';
+import {Provider} from 'react-redux';
 
 import UserAuthUi from './user-auth/UserAuthUi';
 
@@ -6,6 +10,8 @@ import 'aws-sdk';
 import CognitoAuth from './cognito-auth/cognito-auth';
 
 import AWSconfig from './aws-config';
+
+const store = createStore(appReducer);
 
 const config = {
   ...AWSconfig,
@@ -16,9 +22,9 @@ const config = {
 
 var cognitoAuth = new CognitoAuth(config);
 
-class App extends Component {
-  render() {
-    return (
+const App = () => {
+  return (
+    <Provider store={store}>
       <div className="container">
         <div className="row">
           <div className="col-xs-12">
@@ -33,10 +39,10 @@ class App extends Component {
         </div>
 
         <UserAuthUi/>
-        
+      
       </div>
-    );
-  }
+    </Provider>
+  );
 }
 
 export default App;
