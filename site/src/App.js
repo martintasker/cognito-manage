@@ -2,6 +2,20 @@ import React, { Component } from 'react';
 
 import UserAuthUi from './user-auth/UserAuthUi';
 
+import 'aws-sdk';
+import CognitoAuth from './cognito-auth/cognito-auth';
+
+import AWSconfig from './aws-config';
+
+const config = {
+  ...AWSconfig,
+  TRACE: true,
+  onLogin: (currentUser) => console.log("logged in", currentUser),
+  onLogout: () => console.log("logged out"),
+};
+
+var cognitoAuth = new CognitoAuth(config);
+
 class App extends Component {
   render() {
     return (
