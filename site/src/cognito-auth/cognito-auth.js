@@ -1,4 +1,4 @@
-import { CognitoUserPool, CognitoUserAttribute, CognitoUser } from 'amazon-cognito-identity-js';
+import { CognitoUserPool, CognitoUserAttribute, CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 
 class CognitoAuth {
   /**
@@ -43,6 +43,10 @@ class CognitoAuth {
     this.config.onLogin && this.config.onLogin(currentUser);
   }
 
+  onLoginChallenged = (attribStatus) => {
+    this.config.onLoginChallenged && this.config.onLoginChallenged(attribStatus);
+  }
+
   setInitialCredentials = () => {
     this.trace("CognitoAuth.setInitialCredentials()");
     window.AWS.config.credentials = new window.AWS.CognitoIdentityCredentials({
@@ -75,6 +79,75 @@ class CognitoAuth {
       this.currentUser = cognitoUser;
       this.trace("AWS.config.credentials constructed", window.AWS.config.credentials);
       this.onLogin(this.currentUser);
+    });
+  }
+
+  login = async(username, password) => {
+    this.trace("CognitoAuth.login() --", username, '(password)');
+    if (username) {
+      this.partialUser = new CognitoUser({
+        Username: username,
+        Pool: this.userPool,
+      });
+    }
+
+    const getAuthCallbacks = (resolve, reject) => {
+      return {
+        onFailure: (err) => {
+          console.log("cognitoUser.authenticateUser() error:", err);
+          reject(err);
+        },
+        onSuccess: (res) => {
+          this.trace("cognitoUser.authenticate/complete-challenge result:", res);
+          var logins = {};
+          logins[this.cognitoIDP] = res.getIdToken().getJwtToken();
+          window.AWS.config.credentials = new window.AWS.CognitoIdentityCredentials({
+            IdentityPoolId: this.config.AWS_ID_POOL_ID,
+            Logins: logins
+          });
+          this.trace("login: success");
+          resolve(this.partialUser);
+        },
+        newPasswordRequired: (attribsGiven, attribsRequired) => {
+          this.trace("authenticate: newPasswordRequired, attribsGiven:", attribsGiven, "attribsRequired:", attribsRequired);
+          this.onLoginChallenged({
+            attribsGiven: attribsGiven,
+            attribsRequired: attribsRequired
+          });
+          reject('new password required');
+        }
+      }
+    }
+
+    const doLogin = async () => {
+      this.trace("CognitoAuth.login() -- doLogin() --", username, '(password)');
+      return new Promise((resolve, reject) => {
+        if (username) {
+          this.partialUser.authenticateUser(new AuthenticationDetails({
+            Username: username,
+            Password: password,
+          }), getAuthCallbacks(resolve, reject));
+        } else {
+          this.partialUser.completeNewPasswordChallenge(password, {}, getAuthCallbacks(resolve, reject));
+        }
+      });
+    }
+
+    return Promise.resolve()
+    .then(doLogin)
+    .then(() => {
+      this.currentUser = this.partialUser;
+      this.partialUser = null;
+      this.trace("authenticate: overall success");
+      this.onLogin(this.currentUser);
+    })
+    .catch(reason => {
+      var oldCurrentUser = this.currentUser;
+      this.currentUser = null;
+      if (oldCurrentUser) {
+        this.onLogout();
+      }
+      throw reason;
     });
   }
 

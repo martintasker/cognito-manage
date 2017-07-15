@@ -25,6 +25,10 @@ const config = {
     console.log("logged out");
     store.dispatch(actions.authUserLogout());
   },
+  onLoginChallenged: () => {
+    console.log("login challenged");
+    // todo: handle password challenge
+  },
 };
 
 var cognitoAuth = new CognitoAuth(config);

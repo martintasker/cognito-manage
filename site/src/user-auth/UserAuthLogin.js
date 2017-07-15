@@ -17,33 +17,48 @@ class UserAuthLogin extends Component {
     this.state = {
       username: '',
       password: '',
+      pending: false,
     }
   }
 
-  usernameChange = (e) => {
+  setUsername = (e) => {
     this.setState({username: e.target.value});
   }
 
-  passwordChange = (e) => {
+  setPassword = (e) => {
     this.setState({password: e.target.value});
   }
 
-  login = (e) => {
+  login = async(e) => {
     e.preventDefault();
     const {username, password} = this.state;
-    this.setState({password: ''});
+    this.setState({
+      password: '',
+      pending: true,
+    });
+
+    return this.props.cognitoAuth.login(username, password)
+    .then(() => {
+      console.log("logged in");
+      this.setState({pending: false});
+    })
+    .catch((reason) => {
+      console.log("error logging in", reason);
+      this.setState({pending: false});
+      // todo: handle errors
+    });
   }
 
   render() {
     const {isLoggedIn} = this.props;
-    const {username, password} = this.state;
+    const {username, password, pending} = this.state;
 
     return (
       <form>
-        <fieldset disabled={isLoggedIn}>
+        <fieldset disabled={isLoggedIn || pending}>
           <div className="form-group">
-            <input type="text" name="username" placeholder="User name" required value={username}/>
-            <input type="password" name="password" placeholder="Password" required value={password}/>
+            <input type="text" placeholder="User name" required value={username} onChange={this.setUsername}/>
+            <input type="password" placeholder="Password" required value={password} onChange={this.setPassword}/>
             <button onClick={this.login} className="btn btn-primary" type="submit">Login</button>
           </div>
         </fieldset>
