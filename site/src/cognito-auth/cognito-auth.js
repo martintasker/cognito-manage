@@ -40,7 +40,7 @@ class CognitoAuth {
   }
 
   onLogin = (currentUser) => {
-    this.config.onLogin && this.config.onLogin(currentUser);
+    this.config.onLogin && this.config.onLogin(this, currentUser);
   }
 
   setInitialCredentials = () => {

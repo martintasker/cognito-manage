@@ -3,6 +3,7 @@ import React from 'react';
 import {createStore} from 'redux';
 import appReducer from './app.reducer';
 import {Provider} from 'react-redux';
+import actions from './app.actions';
 
 import UserAuthUi from './user-auth/UserAuthUi';
 
@@ -16,8 +17,15 @@ const store = createStore(appReducer);
 const config = {
   ...AWSconfig,
   TRACE: true,
-  onLogin: (currentUser) => console.log("logged in", currentUser),
-  onLogout: () => console.log("logged out"),
+  onLogin: (session, user) => {
+    console.log("logged in", user);
+    store.dispatch(actions.authUserLogin(user.username, {}));
+    store.dispatch(actions.authUserSetSession(session));
+  },
+  onLogout: () => {
+    console.log("logged out");
+    store.dispatch(actions.authUserLogout());
+  },
 };
 
 var cognitoAuth = new CognitoAuth(config);
