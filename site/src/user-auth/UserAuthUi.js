@@ -10,6 +10,7 @@ const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.getIn(['authUser', 'isLoggedIn']),
     username: state.getIn(['authUser', 'username']),
+    loginUiMessage: state.getIn(['loginUi', 'message']),
   };
 };
 
@@ -44,7 +45,7 @@ class UserAuthUi extends Component {
   }
 
   render() {
-    const {isLoggedIn, username} = this.props;
+    const {isLoggedIn, username, loginUiMessage} = this.props;
     console.log("isLoggedIn, username =", isLoggedIn, username);
 
     return (
@@ -59,6 +60,14 @@ class UserAuthUi extends Component {
             </ul>
             <p>Either way, email confirmation and password reset are required before the registered user can log in.</p>
             <p>It's easier to manage users if you require their username to be their email address.</p>
+          </div>
+
+          <div className="col-xs-2">
+            &nbsp;
+          </div>
+          <div className="col-xs-10">
+            {!loginUiMessage && <span>&nbsp;</span>}
+            {loginUiMessage && <span style={{fontWeight:'bold',color:'darkred'}}>{loginUiMessage.toString()}</span>}
           </div>
 
           <div className="col-xs-2">

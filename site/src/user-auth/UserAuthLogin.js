@@ -10,6 +10,12 @@ const mapStateToProps = (state) => {
   };
 };
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loginUiSetMessage: (message) => dispatch(actions.loginUiSetMessage(message)),
+  };
+};
+
 class UserAuthLogin extends Component {
 
   constructor(props) {
@@ -32,12 +38,15 @@ class UserAuthLogin extends Component {
   login = async(e) => {
     e.preventDefault();
     const {username, password} = this.state;
+    const {cognitoAuth, loginUiSetMessage} = this.props;
+
     this.setState({
       password: '',
       pending: true,
     });
+    loginUiSetMessage('');
 
-    return this.props.cognitoAuth.login(username, password)
+    return cognitoAuth.login(username, password)
     .then(() => {
       console.log("logged in");
       this.setState({pending: false});
@@ -45,7 +54,7 @@ class UserAuthLogin extends Component {
     .catch((reason) => {
       console.log("error logging in", reason);
       this.setState({pending: false});
-      // todo: handle errors
+      loginUiSetMessage(reason);
     });
   }
 
@@ -67,4 +76,4 @@ class UserAuthLogin extends Component {
   }
 }
 
-export default connect(mapStateToProps)(UserAuthLogin);
+export default connect(mapStateToProps, mapDispatchToProps)(UserAuthLogin);
