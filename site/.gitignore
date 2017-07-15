@@ -20,4 +20,4 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-aws-config.js
+src/settings.json
