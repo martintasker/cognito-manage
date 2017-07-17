@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 
 import UserAuthLogin from './UserAuthLogin';
 import UserAuthLogout from './UserAuthLogout';
+import UserAuthDeregister from './UserAuthDeregister';
 import UserAuthForcedPassword from './UserAuthForcedPassword';
 
 import actions from '../app.actions';
@@ -167,11 +168,7 @@ class UserAuthUi extends Component {
             Deregister
           </div>
           <div className="col-xs-10">
-            <form>
-              <div className="form-group">
-                <div className="btn btn-danger">Deregister</div>
-              </div>
-            </form>
+            <UserAuthDeregister/>
           </div>
         </div>
 

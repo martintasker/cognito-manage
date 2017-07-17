@@ -170,6 +170,27 @@ class CognitoAuth {
     });
     this.onLogout();
   }
+
+  deregister = () => {
+    this.trace("CognitoAuth.deregister()");
+    return new Promise((resolve, reject) => {
+      if (!this.currentUser) {
+        reject("no current user: cannot deregister");
+        return;
+      }
+      this.currentUser.deleteUser(err => {
+        if (err) {
+          console.error("cognitoUser.deleteUser() error:", err);
+          reject(err);
+          return;
+        }
+        this.currentUser = null;
+        this.trace("deregister: success");
+        this.setDefaultCredentials();
+        resolve();
+      });
+    });
+  }
 }
 
 export default CognitoAuth;
