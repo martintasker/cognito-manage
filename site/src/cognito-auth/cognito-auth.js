@@ -43,8 +43,8 @@ class CognitoAuth {
     this.config.onLogin && this.config.onLogin(currentUser);
   }
 
-  onLoginChallenged = (attribStatus) => {
-    this.config.onLoginChallenged && this.config.onLoginChallenged(attribStatus);
+  onLoginChallengeNewPassword = (user, attribsGiven, attribsRequired) => {
+    this.config.onLoginChallengeNewPassword && this.config.onLoginChallengeNewPassword(user, attribsGiven, attribsRequired);
   }
 
   setInitialCredentials = () => {
@@ -110,10 +110,7 @@ class CognitoAuth {
         },
         newPasswordRequired: (attribsGiven, attribsRequired) => {
           this.trace("authenticate: newPasswordRequired, attribsGiven:", attribsGiven, "attribsRequired:", attribsRequired);
-          this.onLoginChallenged({
-            attribsGiven: attribsGiven,
-            attribsRequired: attribsRequired
-          });
+          this.onLoginChallengeNewPassword(this.partialUser, attribsGiven, attribsRequired);
           reject('new password required');
         }
       }

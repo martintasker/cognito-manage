@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 
 import UserAuthLogin from './UserAuthLogin';
 import UserAuthLogout from './UserAuthLogout';
+import UserAuthForcedPassword from './UserAuthForcedPassword';
 
 import actions from '../app.actions';
 
@@ -196,14 +197,7 @@ class UserAuthUi extends Component {
             Forced new password
           </div>
           <div className="col-xs-10">
-            <form>
-              <fieldset disabled={!isLoggedIn}>
-                <div className="form-group">
-                  <input type="password" name="password" placeholder="Password" required />
-                  <button onClick={this.completeLogin} className="btn btn-primary" type="submit">Complete Login</button>
-                </div>
-              </fieldset>
-            </form>
+            <UserAuthForcedPassword/>
           </div>
 
           <div className="col-xs-2">

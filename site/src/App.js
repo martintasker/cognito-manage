@@ -25,9 +25,9 @@ const config = {
     console.log("logged out");
     store.dispatch(actions.authUserLogout());
   },
-  onLoginChallenged: () => {
-    console.log("login challenged");
-    // todo: handle password challenge
+  onLoginChallengeNewPassword: (user, attribsGiven, attribsRequired) => {
+    console.log("login challenged: new password required", attribsGiven, attribsRequired);
+    store.dispatch(actions.authUserChallengeNewPassword(user.username));
   },
 };
 
