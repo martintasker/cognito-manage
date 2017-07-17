@@ -23,3 +23,19 @@ The ones of most immediate interest to me involve root grants and no self-signup
 ## Root grants, no self-signup
 
 ## Two-tier privilege
+
+## State of play
+
+From the `tools` directory,
+
+* edit `lib/config.js` to specify, carefully, the relevant parameters.
+* run `node setup -p` to setup the pools.
+* run `node teardown -p` to tear down the pools.
+* run `node add-user` to add a user.
+* run `node query` to query the pool and user.
+
+From `site` directory,
+
+* note that `src/aws-config.js` contains the configuration parameters built by the `setup` phase above,
+  but that this is **not** under source control
+* run `npm start` to start the test application

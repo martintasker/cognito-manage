@@ -14,17 +14,17 @@ function homeDirectory() {
 }
 
 // override any of the below if you want to
-exports.REGION = getDefaultRegion();
+exports.region = getDefaultRegion();
 
-exports.SITE_NAME = 'Cognito-Auth Test Site';
-exports.CONFIRMATION_EMAIL_SUBJECT = 'Confirmation code from ' + exports.SITE_NAME;
-exports.CONFIRMATION_EMAIL_BODY = 'Your code is: {####}.  Enter it in the confirmation dialog.';
+exports.siteName = 'Cognito-Auth Test Site';
+exports.confirmationEmailSubject = 'Confirmation code from ' + exports.siteName;
+exports.confirmationEmailBody = 'Your code is: {####}.  Enter it in the confirmation dialog.';
 
-exports.USER_POOL_NAME = 'cognito-auth Test User Pool';
-exports.APP_NAME = 'cognito-auth Test Application';
-exports.POOL_NAME = 'CognitoAuthTestIdentityPool';
-exports.AUTH_ROLE_NAME = 'CognitoAuthTest-AuthRole';
-exports.UNAUTH_ROLE_NAME = 'CognitoAuthTest-UnauthRole';
+exports.userPoolName = 'cognito-auth Test User Pool';
+exports.appName = 'cognito-auth Test Application';
+exports.poolName = 'CognitoAuthTestIdentityPool';
+exports.authRoleName = 'CognitoAuthTest-AuthRole';
+exports.unauthRoleName = 'CognitoAuthTest-UnauthRole';
 
-exports.AUTH_BUCKET_POLICY_NAME = exports.AUTH_ROLE_NAME + '-WriteBucket';
-exports.UPLOAD_FILE_NAME = 'file.pdf';
+exports.authBucketPolicyName = exports.authRoleName + '-WriteBucket';
+exports.uploadFIleName = 'file.pdf';

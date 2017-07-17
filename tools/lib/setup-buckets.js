@@ -7,7 +7,7 @@ var AWS = require('aws-sdk');
 var config = require('./config');
 var settings = require('./settings');
 
-AWS.config.region = config.REGION;
+AWS.config.region = config.region;
 
 var bucket = null;
 
@@ -18,7 +18,7 @@ function setupBuckets(bucketName) {
   bucket = new AWS.S3({
     params: {
       Bucket: bucketName,
-      region: config.REGION,
+      region: config.region,
     }
   });
   return Promise.resolve()
@@ -77,14 +77,14 @@ function createBucketPolicy() {
         "s3:putObjectACL"
       ],
       Resource: [
-        "arn:aws:s3:::" + settings.get('bucketName') + "/" + config.UPLOAD_FILE_NAME,
+        "arn:aws:s3:::" + settings.get('bucketName') + "/" + config.uploadFIleName,
       ]
     }]
   };
   var policyJson = JSON.stringify(policy, null, 2);
   var params = {
     // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/IAM.html#createPolicy-property
-    PolicyName: config.AUTH_BUCKET_POLICY_NAME,
+    PolicyName: config.authBucketPolicyName,
     Description: 'Write to bucket',
     PolicyDocument: policyJson,
   };
@@ -104,7 +104,7 @@ function createBucketPolicy() {
 function attachBucketPolicyToAuthRole() {
   var params = {
     // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/IAM.html#attachRolePolicy-property
-    RoleName: config.AUTH_ROLE_NAME,
+    RoleName: config.authRoleName,
     PolicyArn: settings.get('bucketAuthPolicyArn'),
   };
   return new Promise(function(resolve, reject) {

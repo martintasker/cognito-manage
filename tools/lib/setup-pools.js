@@ -5,7 +5,7 @@ var AWS = require('aws-sdk');
 var config = require('./config');
 var settings = require('./settings');
 
-AWS.config.region = config.REGION;
+AWS.config.region = config.region;
 
 const cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();
 const cognitoIdentity = new AWS.CognitoIdentity();
@@ -27,11 +27,11 @@ function setupPools() {
 function createUserPool() {
   var params = {
     // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CognitoIdentityServiceProvider.html#createUserPool-property
-    PoolName: config.USER_POOL_NAME,
+    PoolName: config.userPoolName,
     AliasAttributes: ['email'], // sign in with email ID: this is what cognito-auth supports currently; 'phone_number' is also interesting
     AutoVerifiedAttributes: ['email'], // AWS recommends this setting, if the corresponding AliasAttribute is used
-    EmailVerificationSubject: config.CONFIRMATION_EMAIL_SUBJECT,
-    EmailVerificationMessage: config.CONFIRMATION_EMAIL_BODY,
+    EmailVerificationSubject: config.confirmationEmailSubject,
+    EmailVerificationMessage: config.confirmationEmailBody,
     LambdaConfig: {},
     MfaConfiguration: 'OFF', // more lifecycle hooks would be needed to support 'ON'
     Policies: {
@@ -61,7 +61,7 @@ function createUserPoolClient() {
   var params = {
     // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CognitoIdentityServiceProvider.html#createUserPoolClient-property
     // in AWS console-speak, this is an "application" for a user pool; in API-speak, it's a "client"
-    ClientName: config.APP_NAME,
+    ClientName: config.appName,
     UserPoolId: settings.get('userPoolId'),
     ExplicitAuthFlows: ['ADMIN_NO_SRP_AUTH'], // todo: check whether we can move on now
     GenerateSecret: false, // by requirement, since we generate temporary secrets on the fly at login time
@@ -85,9 +85,9 @@ function createUserPoolClient() {
 function createIdentityPool() {
   var params = {
     // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CognitoIdentity.html#createIdentityPool-property
-    IdentityPoolName: config.POOL_NAME,
+    IdentityPoolName: config.poolName,
     CognitoIdentityProviders: [{
-      ProviderName: 'cognito-idp.' + config.REGION + '.amazonaws.com/' + settings.get('userPoolId'),
+      ProviderName: 'cognito-idp.' + config.region + '.amazonaws.com/' + settings.get('userPoolId'),
       ClientId: settings.get('applicationId'),
     }],
     AllowUnauthenticatedIdentities: true, // required
@@ -128,7 +128,7 @@ function createAuthRole() {
   var policyJson = JSON.stringify(policy, null, 2);
   var params = {
     // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/IAM.html#createRole-property
-    RoleName: config.AUTH_ROLE_NAME,
+    RoleName: config.authRoleName,
     AssumeRolePolicyDocument: policyJson,
   };
   return new Promise(function(resolve, reject) {
@@ -166,7 +166,7 @@ function createUnauthRole() {
   var policyJson = JSON.stringify(policy, null, 2);
   var params = {
     // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/IAM.html#createRole-property
-    RoleName: config.UNAUTH_ROLE_NAME,
+    RoleName: config.unauthRoleName,
     AssumeRolePolicyDocument: policyJson,
   };
   return new Promise(function(resolve, reject) {

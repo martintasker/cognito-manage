@@ -5,7 +5,7 @@ var AWS = require('aws-sdk');
 var config = require('./lib/config');
 var settings = require('./lib/settings');
 
-AWS.config.region = config.REGION;
+AWS.config.region = config.region;
 
 const cognitoIdentity = new AWS.CognitoIdentity();
 const cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();

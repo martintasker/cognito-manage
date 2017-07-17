@@ -9,12 +9,12 @@ var AWS = require('aws-sdk');
 var config = require('./config');
 var settings = require('./settings');
 
-AWS.config.region = config.REGION;
+AWS.config.region = config.region;
 
 var bucket = new AWS.S3({
   params: {
     Bucket: settings.get('bucketName'),
-    region: config.REGION,
+    region: config.region,
   }
 });
 
@@ -52,7 +52,7 @@ function deleteFiles() {
     bucket.deleteObjects({
       Delete: {
         Objects: [{
-          Key: config.UPLOAD_FILE_NAME,
+          Key: config.uploadFIleName,
         }],
         Quiet: true,
       }
@@ -83,7 +83,7 @@ function deletePolicy(policyArn) {
 
 function detachBucketPolicyFromAuthRole(policyArn) {
   var params = {
-    RoleName: config.AUTH_ROLE_NAME,
+    RoleName: config.authRoleName,
     PolicyArn: policyArn,
   };
   return new Promise(function(resolve, reject) {

@@ -7,7 +7,7 @@ var AWS = require('aws-sdk');
 var config = require('./config');
 var settings = require('./settings');
 
-AWS.config.region = config.REGION;
+AWS.config.region = config.region;
 
 var cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();
 var cognitoIdentity = new AWS.CognitoIdentity();
@@ -16,8 +16,8 @@ var amazonIAM = new AWS.IAM();
 function teardownPools() {
   return Promise.resolve()
     // remove roles
-    .then(() => deleteRole(config.UNAUTH_ROLE_NAME))
-    .then(() => deleteRole(config.AUTH_ROLE_NAME))
+    .then(() => deleteRole(config.unauthRoleName))
+    .then(() => deleteRole(config.authRoleName))
     // remove pools
     .then(() => deleteIdentityPool(settings.get('identityPoolId')))
     .then(() => deleteUserPoolClient(settings.get('userPoolId'), settings.get('applicationId')))
