@@ -122,52 +122,6 @@ class AuthUi extends Component {
         
         <div className="row">
           <div className="col-xs-12">
-            <h2>Initiate registration</h2>
-            <p>You may register</p>
-            <ul>
-              <li>yourself, if you're not authenticated, and it's a self-service user pool</li>
-              <li>someone else, if you are authenticated, and you have admin permissions</li>
-            </ul>
-            <p>Either way, email confirmation and password reset are required before the registered user can log in.</p>
-            <p>It's easier to manage users if you require their username to be their email address.</p>
-          </div>
-
-          <div className="col-xs-2">
-            &nbsp;
-          </div>
-          <div className="col-xs-10">
-            <form className="not-implemented">
-              <fieldset>
-                <div className="form-group">
-                  <div className="checkbox">
-                    <label>
-                      <input type="checkbox" name="emailonly"/>Use email addresses as usernames
-                    </label>
-                  </div>
-                </div>
-              </fieldset>
-            </form>
-          </div>
-
-          <div className="col-xs-2">
-            Register
-          </div>
-          <div className="col-xs-10">
-            <form className="not-implemented">
-              <fieldset>
-                <div className="form-group">
-                  <input type="text" name="username" placeholder="User name" required />
-                  <input type="text" name="email" placeholder="Email Address" required />
-                  <input type="password" name="password" placeholder="Password" required />
-                  <button onClick={this.register} className="btn btn-primary" type="submit">Register</button>
-                </div>
-              </fieldset>
-            </form>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-xs-12">
             <h2>Complete registration</h2>
           </div>
 
@@ -176,35 +130,6 @@ class AuthUi extends Component {
           </div>
           <div className="col-xs-10">
             <AuthUiForcedPassword/>
-          </div>
-
-          <div className="col-xs-2">
-            Confirm
-          </div>
-          <div className="col-xs-10">
-            <form className="not-implemented">
-              <fieldset>
-                <div className="form-group">
-                  <input type="text" name="username" placeholder="User name" required />
-                  <input type="text" name="code" placeholder="Code" required />
-                  <button onClick={this.confirmRegistration} className="btn btn-primary" type="submit">Confirm</button>
-                </div>
-              </fieldset>
-            </form>
-          </div>
-
-          <div className="col-xs-2">
-            Lost code
-          </div>
-          <div className="col-xs-10">
-            <form className="not-implemented">
-              <fieldset>
-                <div className="form-group">
-                  <input type="text" name="username" placeholder="User name" required />
-                  <button onClick={this.resendConfirmationCode} className="btn btn-primary" type="submit">Request New Code</button>
-                </div>
-              </fieldset>
-            </form>
           </div>
         </div>
 

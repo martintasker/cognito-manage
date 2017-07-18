@@ -31,7 +31,9 @@ From the `tools/` directory,
 * `npm install`
 * copy `lib/config.sample.js` to `lib/config.js` and edit, to carefully specify the relevant parameters
   (`lib/config.js` is **not** under source control)
-* run `node setup -p` to setup the pools
+* run `node setup -p` to setup the user and identity pools
+* run `node add-user -u xxx -e xxx@example.com` to create a user:
+  the email you specify will receive a password which you'll need on first login
 
 Then, from `site/`,
 
@@ -39,14 +41,19 @@ Then, from `site/`,
 * note that `src/aws-config.js` contains the configuration parameters built by the `setup` phase above,
   but that this is **not** under source control
 * `npm start` to start the test application
+* check the email you specified above, for the system-assigned password, and try to log in with it
+* complete the new password in the forced-password form
+* you can then log out, deregister, log in, and manage forgotten password
 
-Some of the site functionality isn't implemented yet, as indicated by grey-out.
+Back in `tools/`:
 
-You can also query and change: from `tools/`:
-
+* run `node query` to query the pools and user
+* run `node add-user` to add more users, any time
 * run `node teardown -p` to tear down the pools
-* `node add-user` to add a user
-* `node query` to query the pool and user
 
-There is some not-adequately functioning code in `tools/` to set up and tear down buckets:
-this will be replaced by a better, roles-first approach.
+Still to do:
+
+* condense the already-functioning code into a stateful UI which shows forms only when applicable
+* replace the broken bucket-management code in `tools/` with something saner
+* add tiering within authenticated roles
+* add self-registration
