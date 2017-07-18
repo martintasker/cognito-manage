@@ -52,7 +52,7 @@ class UserAuthLogin extends Component {
       this.setState({pending: false});
     })
     .catch((reason) => {
-      console.log("error logging in", reason);
+      console.error("error logging in", reason);
       this.setState({pending: false});
       loginUiSetMessage(reason);
     });

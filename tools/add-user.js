@@ -22,7 +22,7 @@ var args = parser.parseArgs();
 Promise.resolve()
 .then(addUser)
 .catch(function(reason) {
-  console.log("problem: %j", reason);
+  console.error("problem: %j", reason);
 });
 
 function addUser() {

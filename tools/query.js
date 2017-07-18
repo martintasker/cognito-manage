@@ -14,7 +14,7 @@ Promise.resolve()
 .then(queryIdentityPoolRoles)
 .then(queryUsers)
 .catch(function(reason) {
-  console.log("problem: %j", reason);
+  console.error("problem: %j", reason);
 });
 
 function queryIdentityPoolRoles() {

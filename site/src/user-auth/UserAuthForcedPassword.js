@@ -11,8 +11,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-// todo: add cancel
-
 const mapDispatchToProps = (dispatch) => {
   return {
     loginUiSetMessage: (message) => dispatch(actions.loginUiSetMessage(message)),
@@ -62,7 +60,7 @@ class UserAuthForcedPassword extends Component {
       this.setState({pending: false});
     })
     .catch((reason) => {
-      console.log("error logging in", reason);
+      console.error("error logging in", reason);
       this.setState({pending: false});
       loginUiSetMessage(reason);
     });

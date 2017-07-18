@@ -37,5 +37,5 @@ Promise.resolve()
   }
 })
 .catch(function(reason) {
-  console.log("problem: %j", typeof reason === 'object' ? reason.toString() : reason);
+  console.error("problem: %j", typeof reason === 'object' ? reason.toString() : reason);
 });
