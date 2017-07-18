@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 
+import './auth-ui.css';
+
 import AuthUiLogin from './AuthUiLogin';
 import AuthUiLogout from './AuthUiLogout';
 import AuthUiDeregister from './AuthUiDeregister';
@@ -82,7 +84,7 @@ class AuthUi extends Component {
             Forgotten password: request
           </div>
           <div className="col-xs-10">
-            <form>
+            <form className="not-implemented">
               <fieldset>
                 <div className="form-group">
                   <input type="text" name="username" placeholder="User name" required />
@@ -96,7 +98,7 @@ class AuthUi extends Component {
             Forgotten password: reset
           </div>
           <div className="col-xs-10">
-            <form>
+            <form className="not-implemented">
               <fieldset>
                 <div className="form-group">
                   <input type="text" name="username" placeholder="User name" required />
@@ -152,7 +154,7 @@ class AuthUi extends Component {
             &nbsp;
           </div>
           <div className="col-xs-10">
-            <form>
+            <form className="not-implemented">
               <fieldset>
                 <div className="form-group">
                   <div className="checkbox">
@@ -169,7 +171,7 @@ class AuthUi extends Component {
             Register
           </div>
           <div className="col-xs-10">
-            <form>
+            <form className="not-implemented">
               <fieldset>
                 <div className="form-group">
                   <input type="text" name="username" placeholder="User name" required />
@@ -198,7 +200,7 @@ class AuthUi extends Component {
             Confirm
           </div>
           <div className="col-xs-10">
-            <form>
+            <form className="not-implemented">
               <fieldset>
                 <div className="form-group">
                   <input type="text" name="username" placeholder="User name" required />
@@ -213,7 +215,7 @@ class AuthUi extends Component {
             Lost code
           </div>
           <div className="col-xs-10">
-            <form>
+            <form className="not-implemented">
               <fieldset>
                 <div className="form-group">
                   <input type="text" name="username" placeholder="User name" required />

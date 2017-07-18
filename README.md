@@ -26,16 +26,27 @@ The ones of most immediate interest to me involve root grants and no self-signup
 
 ## State of play
 
-From the `tools` directory,
+From the `tools/` directory,
 
-* edit `lib/config.js` to specify, carefully, the relevant parameters.
-* run `node setup -p` to setup the pools.
-* run `node teardown -p` to tear down the pools.
-* run `node add-user` to add a user.
-* run `node query` to query the pool and user.
+* `npm install`
+* copy `lib/config.sample.js` to `lib/config.js` and edit, to carefully specify the relevant parameters
+  (`lib/config.js` is **not** under source control)
+* run `node setup -p` to setup the pools
 
-From `site` directory,
+Then, from `site/`,
 
+* `npm install`
 * note that `src/aws-config.js` contains the configuration parameters built by the `setup` phase above,
   but that this is **not** under source control
-* run `npm start` to start the test application
+* `npm start` to start the test application
+
+Some of the site functionality isn't implemented yet, as indicated by grey-out.
+
+You can also query and change: from `tools/`:
+
+* run `node teardown -p` to tear down the pools
+* `node add-user` to add a user
+* `node query` to query the pool and user
+
+There is some not-adequately functioning code in `tools/` to set up and tear down buckets:
+this will be replaced by a better, roles-first approach.
