@@ -1,11 +1,11 @@
 import Immutable from 'immutable';
 
 import authUserReducer from './auth-user/auth-user.reducer';
-import loginUiReducer from './auth-ui/auth-ui.reducer';
+import authUiReducer from './auth-ui/auth-ui.reducer';
 
 const initialAppState = Immutable.Map({
   authUser: authUserReducer(),
-  loginUi: loginUiReducer(),
+  authUi: authUiReducer(),
 });
 
 export default function(state = initialAppState, action) {
@@ -14,7 +14,7 @@ export default function(state = initialAppState, action) {
   }
 
   state = state.updateIn(['authUser'], state => authUserReducer(state, action));
-  state = state.updateIn(['loginUi'], state => loginUiReducer(state, action));
+  state = state.updateIn(['authUi'], state => authUiReducer(state, action));
 
   return state;
 }

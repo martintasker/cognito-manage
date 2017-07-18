@@ -18,9 +18,9 @@ describe('initialization tests', function() {
 
 describe('functionality tests', function() {
   it('handles AUTH_UI_SET_MESSAGE', () => {
-    state = reducer(state, actions.loginUiSetMessage('boo!'));
+    state = reducer(state, actions.authUiSetMessage('boo!'));
     expect(state.get('message')).toBe('boo!');
-    state = reducer(state, actions.loginUiSetMessage(''));
+    state = reducer(state, actions.authUiSetMessage(''));
     expect(!state.get('message')).toBe(true);
   });
 });

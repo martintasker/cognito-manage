@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loginUiSetMessage: (message) => dispatch(actions.loginUiSetMessage(message)),
+    authUiSetMessage: (message) => dispatch(actions.authUiSetMessage(message)),
   };
 };
 
@@ -45,14 +45,14 @@ class AuthUiForcedPassword extends Component {
   completeLogin = async(e) => {
     e.preventDefault();
     const {password1} = this.state;
-    const {cognitoAuth, loginUiSetMessage} = this.props;
+    const {cognitoAuth, authUiSetMessage} = this.props;
 
     this.setState({
       password1: '',
       password2: '',
       pending: true,
     });
-    loginUiSetMessage('');
+    authUiSetMessage('');
 
     return cognitoAuth.login(null, password1)
     .then(() => {
@@ -62,7 +62,7 @@ class AuthUiForcedPassword extends Component {
     .catch((reason) => {
       console.error("error logging in", reason);
       this.setState({pending: false});
-      loginUiSetMessage(reason);
+      authUiSetMessage(reason);
     });
   }
 

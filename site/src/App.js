@@ -38,14 +38,14 @@ const App = () => {
   return (
     <Provider store={store}>
       <div className="container">
-        <div className="row">
-          <div className="col-xs-12">
-            <h1>Cognito Test</h1>
-          </div>
-        </div>
 
         <AuthUi/>
-      
+
+        <div className="row">
+          <div className="col-xs-12">
+            <h1>Cognito Auth Test</h1>
+          </div>
+        </div>
       </div>
     </Provider>
   );
