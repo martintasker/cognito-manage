@@ -150,17 +150,23 @@ class CognitoAuth {
 
   logout = () => {
     this.trace("CognitoAuth.logout()");
-    return new Promise((resolve, reject) => {
-      if (!this.currentUser) {
-        reject("no current user: cannot logout");
-        return;
-      }
-      this.currentUser.signOut();
-      this.currentUser = null;
-      this.setDefaultCredentials();
-      resolve();
-      this.trace("success");
-    });
+    if (!this.currentUser) {
+      throw new Error("not logged in: cannot logout");
+    }
+    this.currentUser.signOut();
+    this.currentUser = null;
+    this.setDefaultCredentials();
+    this.trace("success");
+  }
+
+  cancelLogin = () => {
+    this.trace("CognitoAuth.cancelLogin()");
+    if (!this.partialUser) {
+      throw new Error("not logging in: cannot logout");
+    }
+    this.partialUser = null;
+    this.setDefaultCredentials();
+    this.trace("success");
   }
 
   setDefaultCredentials = () => {

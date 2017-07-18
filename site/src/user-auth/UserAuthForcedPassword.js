@@ -5,12 +5,12 @@ import actions from '../app.actions';
 
 const mapStateToProps = (state) => {
   return {
+    username: state.getIn(['authUser', 'username']),
     isChallengedNewPassword: state.getIn(['authUser', 'authState']) === 'challengedNewPassword',
     cognitoAuth: state.getIn(['authUser', 'session']),
   };
 };
 
-// todo: add user reassurance
 // todo: add cancel
 
 const mapDispatchToProps = (dispatch) => {
@@ -24,27 +24,39 @@ class UserAuthForcedPassword extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      password: '',
+      password1: '',
+      password2: '',
       pending: false,
     }
   }
 
-  setPassword = (e) => {
-    this.setState({password: e.target.value});
+  setPassword1 = (e) => {
+    this.setState({password1: e.target.value});
+  }
+
+  setPassword2 = (e) => {
+    this.setState({password2: e.target.value});
+  }
+
+  isValid = () => {
+    const {password1, password2} = this.state;
+    return password1 === password2 &&
+      !!password1;
   }
 
   completeLogin = async(e) => {
     e.preventDefault();
-    const {password} = this.state;
+    const {password1} = this.state;
     const {cognitoAuth, loginUiSetMessage} = this.props;
 
     this.setState({
-      password: '',
+      password1: '',
+      password2: '',
       pending: true,
     });
     loginUiSetMessage('');
 
-    return cognitoAuth.login(null, password)
+    return cognitoAuth.login(null, password1)
     .then(() => {
       console.log("logged in");
       this.setState({pending: false});
@@ -56,16 +68,24 @@ class UserAuthForcedPassword extends Component {
     });
   }
 
+  cancel = (e) => {
+    e.preventDefault();
+    this.props.cognitoAuth.cancelLogin();
+  }
+
   render() {
-    const {isChallengedNewPassword} = this.props;
-    const {password, pending} = this.state;
+    const {username, isChallengedNewPassword} = this.props;
+    const {password1, password2, pending} = this.state;
 
     return (
       <form>
         <fieldset disabled={!isChallengedNewPassword || pending}>
           <div className="form-group">
-            <input type="password" placeholder="Password" required value={password} onChange={this.setPassword}/>
-            <button onClick={this.completeLogin} className="btn btn-primary" type="submit">Complete Login</button>
+            <input type="text" value={username} disabled/>
+            <input type="password" placeholder="Password" required value={password1} onChange={this.setPassword1}/>
+            <input type="password" placeholder="Password" required value={password2} onChange={this.setPassword2}/>
+            <button onClick={this.completeLogin} className="btn btn-primary" type="submit" disabled={!this.isValid()}>Complete Login</button>
+            <button onClick={this.cancel} className="btn btn-danger">Cancel</button>
           </div>
         </fieldset>
       </form>
