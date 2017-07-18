@@ -93,7 +93,7 @@ class UserAuthChangePassword extends Component {
             <input type="password" placeholder="New Password" required value={password1} onChange={this.setPassword1}/>
             <input type="password" placeholder="Confirm" required value={password2} onChange={this.setPassword2}/>
             <button onClick={this.changePassword} className="btn btn-primary" type="submit" disabled={!this.isValid()}>Change Password</button>
-            <button onClick={this.cancel} className="btn btn-danger">Cancel</button>
+            <button onClick={this.cancel} className="btn btn-default">Cancel</button>
           </div>
         </fieldset>
       </form>

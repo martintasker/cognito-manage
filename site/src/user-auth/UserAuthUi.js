@@ -70,7 +70,7 @@ class UserAuthUi extends Component {
 
         <div className="row">
           <div className="col-xs-12">
-            <h2>Login lifecycle</h2>
+            <h2>Login</h2>
           </div>
 
           <div className="col-xs-2">
@@ -81,10 +81,33 @@ class UserAuthUi extends Component {
           </div>
 
           <div className="col-xs-2">
-            Forced new password
+            Forgotten password: request
           </div>
           <div className="col-xs-10">
-            <UserAuthForcedPassword/>
+            <form>
+              <fieldset>
+                <div className="form-group">
+                  <input type="text" name="username" placeholder="User name" required />
+                  <button onClick={this.requestNewPasswordCode} className="btn btn-primary" type="submit">Request Reset Code</button>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+
+          <div className="col-xs-2">
+            Forgotten password: reset
+          </div>
+          <div className="col-xs-10">
+            <form>
+              <fieldset>
+                <div className="form-group">
+                  <input type="text" name="username" placeholder="User name" required />
+                  <input type="text" name="code" placeholder="Confirmation code" required />
+                  <input type="password" name="password" placeholder="New Password" required />
+                  <button onClick={this.setPasswordWithCode} className="btn btn-primary" type="submit">Set New Password</button>
+                </div>
+              </fieldset>
+            </form>
           </div>
 
           <div className="col-xs-2">
@@ -106,11 +129,18 @@ class UserAuthUi extends Component {
           <div className="col-xs-10">
             <UserAuthChangePassword/>
           </div>
+
+          <div className="col-xs-2">
+            Deregister
+          </div>
+          <div className="col-xs-10">
+            <UserAuthDeregister/>
+          </div>
         </div>
         
         <div className="row">
           <div className="col-xs-12">
-            <h2>Registration lifecycle</h2>
+            <h2>Initiate registration</h2>
             <p>You may register</p>
             <ul>
               <li>yourself, if you're not authenticated, and it's a self-service user pool</li>
@@ -152,6 +182,19 @@ class UserAuthUi extends Component {
               </fieldset>
             </form>
           </div>
+        </div>
+
+        <div className="row">
+          <div className="col-xs-12">
+            <h2>Complete registration</h2>
+          </div>
+
+          <div className="col-xs-2">
+            Forced new password
+          </div>
+          <div className="col-xs-10">
+            <UserAuthForcedPassword/>
+          </div>
 
           <div className="col-xs-2">
             Confirm
@@ -180,43 +223,6 @@ class UserAuthUi extends Component {
                 </div>
               </fieldset>
             </form>
-          </div>
-
-          <div className="col-xs-2">
-            Forgotten password: request
-          </div>
-          <div className="col-xs-10">
-            <form>
-              <fieldset>
-                <div className="form-group">
-                  <input type="text" name="username" placeholder="User name" required />
-                  <button onClick={this.requestNewPasswordCode} className="btn btn-primary" type="submit">Request Reset Code</button>
-                </div>
-              </fieldset>
-            </form>
-          </div>
-
-          <div className="col-xs-2">
-            Forgotten password: reset
-          </div>
-          <div className="col-xs-10">
-            <form>
-              <fieldset>
-                <div className="form-group">
-                  <input type="text" name="username" placeholder="User name" required />
-                  <input type="text" name="code" placeholder="Confirmation code" required />
-                  <input type="password" name="password" placeholder="New Password" required />
-                  <button onClick={this.setPasswordWithCode} className="btn btn-primary" type="submit">Set New Password</button>
-                </div>
-              </fieldset>
-            </form>
-          </div>
-
-          <div className="col-xs-2">
-            Deregister
-          </div>
-          <div className="col-xs-10">
-            <UserAuthDeregister/>
           </div>
         </div>
 
