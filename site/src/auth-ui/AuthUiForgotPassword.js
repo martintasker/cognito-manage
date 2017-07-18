@@ -52,6 +52,12 @@ class AuthUiForgotPassword extends Component {
     });
   }
 
+  cancel = (e) => {
+    e.preventDefault();
+    this.props.loginUiSetMessage('');
+    this.setState({username: ''});
+  }
+
   isValid = () => {
     const {username} = this.state;
     return !!username;
@@ -67,6 +73,7 @@ class AuthUiForgotPassword extends Component {
           <div className="form-group">
             <input type="text" placeholder="User name" required value={username} onChange={this.setUsername}/>
             <button onClick={this.requestNewPasswordCode} className="btn btn-primary" disabled={!this.isValid()} type="submit">Request New Password</button>
+            <button onClick={this.cancel} className="btn btn-default">Cancel</button>
           </div>
         </fieldset>
       </form>

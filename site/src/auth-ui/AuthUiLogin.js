@@ -58,6 +58,20 @@ class AuthUiLogin extends Component {
     });
   }
 
+  cancel = (e) => {
+    e.preventDefault();
+    this.props.loginUiSetMessage('');
+    this.setState({
+      username: '',
+      password: '',
+    });
+  }
+
+  isValid = () => {
+    const {username, password} = this.state;
+    return !!username && !!password;
+  }
+
   render() {
     const {isLoggedIn} = this.props;
     const {username, password, pending} = this.state;
@@ -68,7 +82,8 @@ class AuthUiLogin extends Component {
           <div className="form-group">
             <input type="text" placeholder="User name" required value={username} onChange={this.setUsername}/>
             <input type="password" placeholder="Password" required value={password} onChange={this.setPassword}/>
-            <button onClick={this.login} className="btn btn-primary" type="submit">Login</button>
+            <button onClick={this.login} className="btn btn-primary" type="submit" disabled={!this.isValid()}>Login</button>
+            <button onClick={this.cancel} className="btn btn-default">Cancel</button>
           </div>
         </fieldset>
       </form>

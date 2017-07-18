@@ -232,6 +232,26 @@ class CognitoAuth {
       });
     });
   }
+
+  setPasswordWithCode = async(username, password, code) => {
+    this.trace("CognitoAuth.setPasswordWithCode() --", username, '(password)', code);
+    var cognitoUser = new CognitoUser({
+      Username: username,
+      Pool: this.userPool
+    });
+    return new Promise((resolve, reject) => {
+      cognitoUser.confirmPassword(code, password, {
+        onSuccess: () => {
+          this.trace("success");
+          resolve();
+        },
+        onFailure: err => {
+          this.trace("cognitoUser.confirmPassword() error:", err);
+          reject(err);
+        },
+      });
+    });
+  }
 }
 
 export default CognitoAuth;
