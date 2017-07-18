@@ -54,6 +54,60 @@ class UserAuthUi extends Component {
       <div>
         <div className="row">
           <div className="col-xs-12">
+            <h2>Login lifecycle</h2>
+            {isLoggedIn &&
+              <p>Logged in as {username}.</p>
+            }
+            {!isLoggedIn &&
+              <p>Not logged in.</p>
+            }
+          </div>
+
+          <div className="col-xs-2">
+            Login
+          </div>
+          <div className="col-xs-10">
+            <UserAuthLogin/>
+          </div>
+
+          <div className="col-xs-2">
+            Forced new password
+          </div>
+          <div className="col-xs-10">
+            <UserAuthForcedPassword/>
+          </div>
+
+          <div className="col-xs-2">
+            Logout
+          </div>
+          <div className="col-xs-10">
+            <UserAuthLogout/>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-xs-12">
+            <h2>Profile management</h2>
+          </div>
+
+          <div className="col-xs-2">
+            Request change password
+          </div>
+          <div className="col-xs-10">
+            <form>
+              <fieldset disabled={!isLoggedIn}>
+                <div className="form-group">
+                  <input type="password" name="oldPassword" placeholder="Old Password" required />
+                  <input type="password" name="password" placeholder="New Password" required />
+                  <button onClick={this.changePassword} className="btn btn-primary" type="submit">Change Password</button>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+        
+        <div className="row">
+          <div className="col-xs-12">
             <h2>Registration lifecycle</h2>
             <p>You may register</p>
             <ul>
@@ -172,60 +226,6 @@ class UserAuthUi extends Component {
           </div>
         </div>
 
-        <div className="row">
-          <div className="col-xs-12">
-            <h2>Login lifecycle</h2>
-            {isLoggedIn &&
-              <p>Logged in as {username}.</p>
-            }
-            {!isLoggedIn &&
-              <p>Not logged in.</p>
-            }
-          </div>
-
-          <div className="col-xs-2">
-            Login
-          </div>
-          <div className="col-xs-10">
-            <UserAuthLogin/>
-          </div>
-
-          <div className="col-xs-2">
-            Forced new password
-          </div>
-          <div className="col-xs-10">
-            <UserAuthForcedPassword/>
-          </div>
-
-          <div className="col-xs-2">
-            Logout
-          </div>
-          <div className="col-xs-10">
-            <UserAuthLogout/>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-xs-12">
-            <h2>Profile management</h2>
-          </div>
-
-          <div className="col-xs-2">
-            Request change password
-          </div>
-          <div className="col-xs-10">
-            <form>
-              <fieldset disabled={!isLoggedIn}>
-                <div className="form-group">
-                  <input type="password" name="oldPassword" placeholder="Old Password" required />
-                  <input type="password" name="password" placeholder="New Password" required />
-                  <button onClick={this.changePassword} className="btn btn-primary" type="submit">Change Password</button>
-                </div>
-              </fieldset>
-            </form>
-          </div>
-        </div>
-        
       </div>
     );
   }
