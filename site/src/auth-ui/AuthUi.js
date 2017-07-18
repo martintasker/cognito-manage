@@ -8,6 +8,7 @@ import AuthUiLogout from './AuthUiLogout';
 import AuthUiDeregister from './AuthUiDeregister';
 import AuthUiForcedPassword from './AuthUiForcedPassword';
 import AuthUiChangePassword from './AuthUiChangePassword';
+import AuthUiForgotPassword from './AuthUiForgotPassword';
 
 const mapStateToProps = (state) => {
   return {
@@ -28,10 +29,6 @@ class AuthUi extends Component {
   }
 
   resendConfirmationCode = (e) => {
-    e.preventDefault();
-  }
-
-  requestNewPasswordCode = (e) => {
     e.preventDefault();
   }
 
@@ -84,14 +81,7 @@ class AuthUi extends Component {
             Forgotten password: request
           </div>
           <div className="col-xs-10">
-            <form className="not-implemented">
-              <fieldset>
-                <div className="form-group">
-                  <input type="text" name="username" placeholder="User name" required />
-                  <button onClick={this.requestNewPasswordCode} className="btn btn-primary" type="submit">Request Reset Code</button>
-                </div>
-              </fieldset>
-            </form>
+            <AuthUiForgotPassword/>
           </div>
 
           <div className="col-xs-2">

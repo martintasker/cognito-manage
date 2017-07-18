@@ -35,6 +35,9 @@ function addUser() {
       UserAttributes: [{
         Name: 'email',
         Value: args.email
+      },{
+        Name: 'email_verified',
+        Value: 'true'
       }],
     }, function(err, data) {
       if (err) {
