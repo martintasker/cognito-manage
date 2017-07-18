@@ -6,7 +6,7 @@ import actions from '../app.actions';
 const mapStateToProps = (state) => {
   return {
     username: state.getIn(['authUser', 'username']),
-    isChallengedNewPassword: state.getIn(['authUser', 'authState']) === 'challengedNewPassword',
+    isChallengedNewPassword: state.getIn(['authUi', 'authState']) === 'challengedNewPassword',
     cognitoAuth: state.getIn(['authUser', 'session']),
   };
 };

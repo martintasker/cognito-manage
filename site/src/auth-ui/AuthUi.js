@@ -16,33 +16,14 @@ const mapStateToProps = (state) => {
     isLoggedIn: state.getIn(['authUser', 'isLoggedIn']),
     username: state.getIn(['authUser', 'username']),
     authUiMessage: state.getIn(['authUi', 'message']),
+    authUiState: state.getIn(['authUi', 'authState']),
   };
 };
 
 class AuthUi extends Component {
 
-  register = (e) => {
-    e.preventDefault();
-  }
-
-  confirmRegistration = (e) => {
-    e.preventDefault();
-  }
-
-  resendConfirmationCode = (e) => {
-    e.preventDefault();
-  }
-
-  setPasswordWithCode = (e) => {
-    e.preventDefault();
-  }
-
-  completeLogin = (e) => {
-    e.preventDefault();
-  }
-
   render() {
-    const {isLoggedIn, username, authUiMessage} = this.props;
+    const {isLoggedIn, username, authUiMessage, authUiState} = this.props;
     console.log("isLoggedIn, username =", isLoggedIn, username);
 
     return (
@@ -70,10 +51,14 @@ class AuthUi extends Component {
           <div className="col-xs-12">
             {!isLoggedIn &&
               <div>
-                <AuthUiLogin/>
+                {authUiState === 'neutral' &&
+                  <AuthUiLogin/>
+                }
                 <AuthUiForgotPassword/>
                 <AuthUiSetPasswordWithCode/>
-                <AuthUiForcedPassword/>
+                {authUiState === 'forceNewPassword' &&
+                  <AuthUiForcedPassword/>
+                }
               </div>
             }
             {isLoggedIn &&

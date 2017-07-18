@@ -20,14 +20,16 @@ const config = {
   onLogin: (user) => {
     console.log("logged in", user);
     store.dispatch(actions.authUserLogin(user.username, {}));
+    store.dispatch(actions.authUiSetAuthState('neutral'));
   },
   onLogout: () => {
     console.log("logged out");
     store.dispatch(actions.authUserLogout());
+    store.dispatch(actions.authUiSetAuthState('neutral'));
   },
   onLoginChallengeNewPassword: (user, attribsGiven, attribsRequired) => {
     console.log("login challenged: new password required", attribsGiven, attribsRequired);
-    store.dispatch(actions.authUserChallengeNewPassword(user.username));
+    store.dispatch(actions.authUiSetAuthState('forceNewPassword'));
   },
 };
 

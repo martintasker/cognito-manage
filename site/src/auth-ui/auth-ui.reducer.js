@@ -2,6 +2,7 @@ import Immutable from 'immutable';
 
 const initialUserState = Immutable.Map({
   message: '',
+  authState: 'neutral',
 });
 
 export default function(state = initialUserState, action) {
@@ -13,6 +14,12 @@ export default function(state = initialUserState, action) {
     const {message} = action;
     return state
       .set('message', message);
+  }
+
+  if (action.type === 'AUTH_UI_SET_AUTH_STATE') {
+    const {authState} = action;
+    return state
+      .set('authState', authState);
   }
 
   return state;
