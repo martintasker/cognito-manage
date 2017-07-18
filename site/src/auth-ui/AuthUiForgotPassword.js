@@ -13,6 +13,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     authUiSetMessage: (message) => dispatch(actions.authUiSetMessage(message)),
+    authUiSetAuthState: (authState) => dispatch(actions.authUiSetAuthState(authState)),
   };
 };
 
@@ -44,6 +45,7 @@ class AuthUiForgotPassword extends Component {
     .then(() => {
       console.log("requested new password");
       this.setState({pending: false});
+      this.props.authUiSetAuthState('setNewPasswordWithCode');
     })
     .catch((reason) => {
       console.error("error requesting password", reason);
@@ -55,6 +57,7 @@ class AuthUiForgotPassword extends Component {
   cancel = (e) => {
     e.preventDefault();
     this.props.authUiSetMessage('');
+    this.props.authUiSetAuthState('neutral');
     this.setState({username: ''});
   }
 

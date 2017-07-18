@@ -10,6 +10,7 @@ import AuthUiForcedPassword from './AuthUiForcedPassword';
 import AuthUiChangePassword from './AuthUiChangePassword';
 import AuthUiForgotPassword from './AuthUiForgotPassword';
 import AuthUiSetPasswordWithCode from './AuthUiSetPasswordWithCode';
+import AuthUiProfile from './AuthUiProfile';
 
 const mapStateToProps = (state) => {
   return {
@@ -54,8 +55,12 @@ class AuthUi extends Component {
                 {authUiState === 'neutral' &&
                   <AuthUiLogin/>
                 }
-                <AuthUiForgotPassword/>
-                <AuthUiSetPasswordWithCode/>
+                {authUiState === 'forgotPassword' &&
+                  <AuthUiForgotPassword/>
+                }
+                {authUiState === 'setNewPasswordWithCode' &&
+                  <AuthUiSetPasswordWithCode/>
+                }
                 {authUiState === 'forceNewPassword' &&
                   <AuthUiForcedPassword/>
                 }
@@ -64,8 +69,13 @@ class AuthUi extends Component {
             {isLoggedIn &&
               <div>
                 <AuthUiLogout/>
-                <AuthUiChangePassword/>
-                <AuthUiDeregister/>
+                <AuthUiProfile/>
+                {authUiState === 'showProfile' &&
+                  <div>
+                    <AuthUiChangePassword/>
+                    <AuthUiDeregister/>
+                  </div>
+                }
               </div>
             }
           </div>

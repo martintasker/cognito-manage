@@ -13,6 +13,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     authUiSetMessage: (message) => dispatch(actions.authUiSetMessage(message)),
+    authUiSetAuthState: (authState) => dispatch(actions.authUiSetAuthState(authState)),
   };
 };
 
@@ -33,6 +34,11 @@ class AuthUiLogin extends Component {
 
   setPassword = (e) => {
     this.setState({password: e.target.value});
+  }
+
+  forgotPassword = (e) => {
+    e.preventDefault();
+    this.props.authUiSetAuthState('forgotPassword');
   }
 
   login = async(e) => {
@@ -83,6 +89,7 @@ class AuthUiLogin extends Component {
             <input type="text" placeholder="User name" required value={username} onChange={this.setUsername}/>
             <input type="password" placeholder="Password" required value={password} onChange={this.setPassword}/>
             <button onClick={this.login} className="btn btn-primary" type="submit" disabled={!this.isValid()}>Login</button>
+            <button onClick={this.forgotPassword} className="btn btn-primary">Forgot password</button>
             <button onClick={this.cancel} className="btn btn-default">Cancel</button>
           </div>
         </fieldset>

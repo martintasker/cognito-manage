@@ -13,6 +13,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     authUiSetMessage: (message) => dispatch(actions.authUiSetMessage(message)),
+    authUiSetAuthState: (authState) => dispatch(actions.authUiSetAuthState(authState)),
   };
 };
 
@@ -91,6 +92,7 @@ class AuthUiSetPasswordWithCode extends Component {
       password1: '',
       password2: '',
     });
+    this.props.authUiSetAuthState('neutral');
   }
 
   isValid = () => {
