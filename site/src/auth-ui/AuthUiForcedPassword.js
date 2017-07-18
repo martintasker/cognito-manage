@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-class UserAuthForcedPassword extends Component {
+class AuthUiForcedPassword extends Component {
 
   constructor(props) {
     super(props);
@@ -91,4 +91,4 @@ class UserAuthForcedPassword extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserAuthForcedPassword);
+export default connect(mapStateToProps, mapDispatchToProps)(AuthUiForcedPassword);

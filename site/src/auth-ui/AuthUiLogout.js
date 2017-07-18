@@ -8,7 +8,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-class UserAuthLogout extends Component {
+class AuthUiLogout extends Component {
 
   logout = (e) => {
     e.preventDefault();
@@ -28,4 +28,4 @@ class UserAuthLogout extends Component {
   }
 }
 
-export default connect(mapStateToProps)(UserAuthLogout);
+export default connect(mapStateToProps)(AuthUiLogout);

@@ -16,7 +16,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-class UserAuthLogin extends Component {
+class AuthUiLogin extends Component {
 
   constructor(props) {
     super(props);
@@ -76,4 +76,4 @@ class UserAuthLogin extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserAuthLogin);
+export default connect(mapStateToProps, mapDispatchToProps)(AuthUiLogin);

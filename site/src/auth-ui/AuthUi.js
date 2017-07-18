@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 
-import UserAuthLogin from './UserAuthLogin';
-import UserAuthLogout from './UserAuthLogout';
-import UserAuthDeregister from './UserAuthDeregister';
-import UserAuthForcedPassword from './UserAuthForcedPassword';
-import UserAuthChangePassword from './UserAuthChangePassword';
+import AuthUiLogin from './AuthUiLogin';
+import AuthUiLogout from './AuthUiLogout';
+import AuthUiDeregister from './AuthUiDeregister';
+import AuthUiForcedPassword from './AuthUiForcedPassword';
+import AuthUiChangePassword from './AuthUiChangePassword';
 
 const mapStateToProps = (state) => {
   return {
@@ -15,7 +15,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-class UserAuthUi extends Component {
+class AuthUi extends Component {
 
   register = (e) => {
     e.preventDefault();
@@ -75,7 +75,7 @@ class UserAuthUi extends Component {
             Login
           </div>
           <div className="col-xs-10">
-            <UserAuthLogin/>
+            <AuthUiLogin/>
           </div>
 
           <div className="col-xs-2">
@@ -112,7 +112,7 @@ class UserAuthUi extends Component {
             Logout
           </div>
           <div className="col-xs-10">
-            <UserAuthLogout/>
+            <AuthUiLogout/>
           </div>
         </div>
 
@@ -125,14 +125,14 @@ class UserAuthUi extends Component {
             Request change password
           </div>
           <div className="col-xs-10">
-            <UserAuthChangePassword/>
+            <AuthUiChangePassword/>
           </div>
 
           <div className="col-xs-2">
             Deregister
           </div>
           <div className="col-xs-10">
-            <UserAuthDeregister/>
+            <AuthUiDeregister/>
           </div>
         </div>
         
@@ -191,7 +191,7 @@ class UserAuthUi extends Component {
             Forced new password
           </div>
           <div className="col-xs-10">
-            <UserAuthForcedPassword/>
+            <AuthUiForcedPassword/>
           </div>
 
           <div className="col-xs-2">
@@ -229,4 +229,4 @@ class UserAuthUi extends Component {
   }
 }
 
-export default connect(mapStateToProps)(UserAuthUi);
+export default connect(mapStateToProps)(AuthUi);

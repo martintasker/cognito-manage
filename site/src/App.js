@@ -5,7 +5,7 @@ import appReducer from './app.reducer';
 import {Provider} from 'react-redux';
 import actions from './app.actions';
 
-import UserAuthUi from './user-auth/UserAuthUi';
+import AuthUi from './auth-ui/AuthUi';
 
 import 'aws-sdk';
 import CognitoAuth from './cognito-auth/cognito-auth';
@@ -44,7 +44,7 @@ const App = () => {
           </div>
         </div>
 
-        <UserAuthUi/>
+        <AuthUi/>
       
       </div>
     </Provider>

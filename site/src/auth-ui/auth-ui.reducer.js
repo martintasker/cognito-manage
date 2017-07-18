@@ -9,7 +9,7 @@ export default function(state = initialUserState, action) {
     return state;
   }
 
-  if (action.type === 'LOGIN_UI_SET_MESSAGE') {
+  if (action.type === 'AUTH_UI_SET_MESSAGE') {
     const {message} = action;
     return state
       .set('message', message);

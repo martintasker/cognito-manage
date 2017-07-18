@@ -1,7 +1,7 @@
 import Immutable from 'immutable';
 
 import authUserReducer from './auth-user/auth-user.reducer';
-import loginUiReducer from './user-auth/login-ui.reducer';
+import loginUiReducer from './auth-ui/auth-ui.reducer';
 
 const initialAppState = Immutable.Map({
   authUser: authUserReducer(),

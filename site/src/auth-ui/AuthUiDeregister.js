@@ -8,7 +8,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-class UserAuthDeregister extends Component {
+class AuthUiDeregister extends Component {
 
   deregister = (e) => {
     e.preventDefault();
@@ -28,4 +28,4 @@ class UserAuthDeregister extends Component {
   }
 }
 
-export default connect(mapStateToProps)(UserAuthDeregister);
+export default connect(mapStateToProps)(AuthUiDeregister);
