@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 
-import actions from '../app.actions';
-
 const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.getIn(['authUser', 'isLoggedIn']),

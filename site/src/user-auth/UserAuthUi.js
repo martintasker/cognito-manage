@@ -7,8 +7,6 @@ import UserAuthDeregister from './UserAuthDeregister';
 import UserAuthForcedPassword from './UserAuthForcedPassword';
 import UserAuthChangePassword from './UserAuthChangePassword';
 
-import actions from '../app.actions';
-
 const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.getIn(['authUser', 'isLoggedIn']),
