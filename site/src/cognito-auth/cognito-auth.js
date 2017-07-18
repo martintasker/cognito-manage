@@ -94,7 +94,7 @@ class CognitoAuth {
     const getAuthCallbacks = (resolve, reject) => {
       return {
         onFailure: (err) => {
-          console.log("cognitoUser.authenticateUser() error:", err);
+          this.trace("cognitoUser.authenticateUser() error:", err);
           reject(err);
         },
         onSuccess: (res) => {
@@ -193,6 +193,21 @@ class CognitoAuth {
         this.currentUser = null;
         this.trace("deregister: success");
         this.setDefaultCredentials();
+        resolve();
+      });
+    });
+  }
+
+  changePassword = async(oldPassword, password) => {
+    this.trace("CognitoAuth.changePassword() --", '(oldPassword)', '(password)');
+    return new Promise((resolve, reject) => {
+      this.currentUser.changePassword(oldPassword, password, err => {
+        if (err) {
+          this.trace("cognitoUser.changePassword() error:", err);
+          reject(err);
+          return;
+        }
+        this.trace("changePassword: success");
         resolve();
       });
     });

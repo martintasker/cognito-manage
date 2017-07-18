@@ -44,12 +44,6 @@ const App = () => {
           </div>
         </div>
 
-        <div className="row">
-          <div className="col-xs-12">
-            <p>(test code)</p>
-          </div>
-        </div>
-
         <UserAuthUi/>
       
       </div>

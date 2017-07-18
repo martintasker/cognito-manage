@@ -5,6 +5,7 @@ import UserAuthLogin from './UserAuthLogin';
 import UserAuthLogout from './UserAuthLogout';
 import UserAuthDeregister from './UserAuthDeregister';
 import UserAuthForcedPassword from './UserAuthForcedPassword';
+import UserAuthChangePassword from './UserAuthChangePassword';
 
 import actions from '../app.actions';
 
@@ -42,25 +43,34 @@ class UserAuthUi extends Component {
     e.preventDefault();
   }
 
-  changePassword = (e) => {
-    e.preventDefault();
-  }
-
   render() {
     const {isLoggedIn, username, loginUiMessage} = this.props;
     console.log("isLoggedIn, username =", isLoggedIn, username);
 
     return (
       <div>
+        {loginUiMessage &&
+          <div className="row">
+            <div className="col-xs-12">
+              <p style={{fontWeight:'bold',color:'darkred'}}>{loginUiMessage.toString()}</p>
+            </div>
+          </div>
+        }
+
         <div className="row">
           <div className="col-xs-12">
-            <h2>Login lifecycle</h2>
             {isLoggedIn &&
-              <p>Logged in as {username}.</p>
+              <p style={{fontWeight:'bold',color:'darkgreen'}}>Logged in as {username}.</p>
             }
             {!isLoggedIn &&
               <p>Not logged in.</p>
             }
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-xs-12">
+            <h2>Login lifecycle</h2>
           </div>
 
           <div className="col-xs-2">
@@ -94,15 +104,7 @@ class UserAuthUi extends Component {
             Request change password
           </div>
           <div className="col-xs-10">
-            <form>
-              <fieldset disabled={!isLoggedIn}>
-                <div className="form-group">
-                  <input type="password" name="oldPassword" placeholder="Old Password" required />
-                  <input type="password" name="password" placeholder="New Password" required />
-                  <button onClick={this.changePassword} className="btn btn-primary" type="submit">Change Password</button>
-                </div>
-              </fieldset>
-            </form>
+            <UserAuthChangePassword/>
           </div>
         </div>
         
@@ -116,14 +118,6 @@ class UserAuthUi extends Component {
             </ul>
             <p>Either way, email confirmation and password reset are required before the registered user can log in.</p>
             <p>It's easier to manage users if you require their username to be their email address.</p>
-          </div>
-
-          <div className="col-xs-2">
-            &nbsp;
-          </div>
-          <div className="col-xs-10">
-            {!loginUiMessage && <span>&nbsp;</span>}
-            {loginUiMessage && <span style={{fontWeight:'bold',color:'darkred'}}>{loginUiMessage.toString()}</span>}
           </div>
 
           <div className="col-xs-2">
