@@ -1,32 +1,67 @@
 # cognito
 
-Aim: a Cognito-based setup
+Aim:
 
-* React app with login, logout, register, deregister, forced password update, change password, confirm password,
-  enter confirmation code, request re-send confirmation code -- ie, all registration and self-service paraphernalia
-  except for MFA and except for federated
-* admin scripts to set up identity pools
+* Cognito authentication with a number of interesting scenarios
+* React-based demo code, client-side (in `site/`)
+* node-based admin code, from command-line (in `tools/`)
 
-There are various types of authentication setup which Cognito can support:
+Current state of play:
 
-* single-tier federated eg from Facebook
-* single-tier, with self-registration and self-management
-* single-tier, with root grants, self-management and public access
-* two-tier, with root registration of admins, admin registration of users, self-management, and no public access
-* additional frills with MFA
-* additional frills with profile management
+* tools to set up and query identity pools
+* tools to add user and query users
+* client-side code to complete admin-initiated registration
+* client-side tools to manage login, logout, deregistration,
+  change password, forgotten password
+* two-tier Cognito-only pools, so you can have public and user
+  roles, or public and editor/admin
 
-The easiest to implement are single-tier federated and single-tier with self-signup and self-management.
+Immediate intent:
 
-The ones of most immediate interest to me involve root grants and no self-signup.
+* add self-signup
+* add third role, so that it's possible to distinguish,
+  for example, between user and editor/admin (as well as public)
+* more comprehensive admin tools
+* packaging improvements to improve app size
 
-## Root grants, no self-signup
+Longer-range possibilities:
 
-## Two-tier privilege
+* nicer modularization, packaging and documentation, to make code re-use easier
+* add MFA
+* add federated sign-up, eg via Facbook etc
 
-## State of play
+Pros and cons of using Amazon Cognito authentication:
 
-From the `tools/` directory,
+* pro: integrates directly with back-end AWS IAM roles, so that
+  you can reason very directly what your client is authorized to
+  do on the back-end
+* pro: enables serverless app development by invoking AWS services
+  such as S3 and DynamoDB directly from the client
+* con: the AWS SDK for JavaScript, and `amazon-cognito-identity-js`
+  itself, are quite large, so that compared with other
+  authentication methods they produce a slow-to-load application
+  with potentially significant network costs
+* you can address the con, if you wish, by using other types of
+  authentication, or by lazy loading so that at least public
+  access doesn't require authentication-related code download,
+  or by a custom build of the AWS SDK for only the services you require
+
+History: this fairly new repo is based on code lifted and shifted
+from the Angular-based
+[`cognito-auth`](http://github.com/martintasker/cognito-auth) project.
+It would have been
+nice to have kept a single repo with history, but somehow that
+didn't happen.  In the interim, the node code has been made
+somewhat more Es6-friendly (while still running native, without
+Babel), AWS SDK dependencies have been updated (they are now
+packaged much more nicely, especially `amazon-cognito-identity-js`),
+and client-side code has been migrated to React.
+
+## How to use
+
+Assuming you have an installation of the AWS CLI with
+developer keys suitable for your project, then,
+from the `tools/` directory,
 
 * `npm install`
 * copy `lib/config.sample.js` to `lib/config.js` and edit, to carefully specify the relevant parameters
@@ -51,9 +86,19 @@ Back in `tools/`:
 * run `node add-user` to add more users, any time
 * run `node teardown -p` to tear down the pools
 
-Still to do:
+Now that you know you have user+identity pools which work,
+you can lift and shift them into your own application:
+you will need, from `site/src/`,
 
-* condense the already-functioning code into a stateful UI which shows forms only when applicable
-* replace the broken bucket-management code in `tools/` with something saner
-* add tiering within authenticated roles
-* add self-registration
+* the JavaScript code in `cognito-auth/`, as-is
+* `aws-config.js` and `settings.json`
+* the relevant stub code in `App.js`
+* the Redux code in `auth-user/`, which manages authentication
+  state and is all that the majority of your app should need
+* the React and Redux code in `auth-ui`, with the UI components
+  tweaked to taste
+* the Redux imports and compositions in `app.reducer.js` and `app.actions.js`
+
+You'll also need to include the AWS SDK in your project,
+along with `amazon-cognito-identity-js`.  It's easiest to
+install both using npm.
