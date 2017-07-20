@@ -18,31 +18,25 @@ Promise.resolve()
 });
 
 function queryIdentityPoolRoles() {
-  return new Promise(function(resolve, reject) {
-    cognitoIdentity.getIdentityPoolRoles({
-      IdentityPoolId: settings.get('identityPoolId'),
-    }, function(err, data) {
-      if (err) {
-        return reject(err);
-      }
-      console.log("queryIdentityPoolRoles -> %j", data);
-      return resolve(data);
-    });
+  const params = {
+    IdentityPoolId: settings.get('identityPoolId'),
+  };
+  return cognitoIdentity.getIdentityPoolRoles(params).promise()
+  .then(data => {
+    console.log("queryIdentityPoolRoles -> %j", data);
+    return data;
   });
 }
 
 function queryUsers() {
-  return new Promise(function(resolve, reject) {
-    cognitoIdentityServiceProvider.listUsers({
-      UserPoolId: settings.get('userPoolId'),
-      AttributesToGet: ['email'],
-      PaginationToken: null // todo: scale up to support multiple queries using pagination tokens
-    }, function(err, data) {
-      if (err) {
-        return reject(err);
-      }
-      console.log("listUsers -> %j", data);
-      return resolve(data);
-    });
+  const params = {
+    UserPoolId: settings.get('userPoolId'),
+    AttributesToGet: ['email'],
+    PaginationToken: null // todo: scale up to support multiple queries using pagination tokens
+  };
+  return cognitoIdentityServiceProvider.listUsers(params).promise()
+  .then(data => {
+    console.log("listUsers -> %j", data);
+    return data;
   });
 }

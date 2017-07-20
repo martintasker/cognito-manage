@@ -26,25 +26,22 @@ Promise.resolve()
 });
 
 function addUser() {
-  return new Promise(function(resolve, reject) {
-    cognitoIdentityServiceProvider.adminCreateUser({
-      UserPoolId: settings.get('userPoolId'),
-      Username: args.user,
-      DesiredDeliveryMediums: ['EMAIL'],
-      ForceAliasCreation: true,
-      UserAttributes: [{
-        Name: 'email',
-        Value: args.email
-      },{
-        Name: 'email_verified',
-        Value: 'true'
-      }],
-    }, function(err, data) {
-      if (err) {
-        return reject(err);
-      }
-      console.log("adminCreateUser -> %j", data);
-      return resolve(data);
-    });
+  const params = {
+    UserPoolId: settings.get('userPoolId'),
+    Username: args.user,
+    DesiredDeliveryMediums: ['EMAIL'],
+    ForceAliasCreation: true,
+    UserAttributes: [{
+      Name: 'email',
+      Value: args.email
+    },{
+      Name: 'email_verified',
+      Value: 'true'
+    }],
+  };
+  return cognitoIdentityServiceProvider.adminCreateUser(params).promise()
+  .then(data => {
+    console.log("adminCreateUser -> %j", data);
+    return data;
   });
 }

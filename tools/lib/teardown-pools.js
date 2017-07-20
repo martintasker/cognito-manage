@@ -27,62 +27,49 @@ function teardownPools() {
 
 function deleteUserPool(userPoolId) {
   console.log("deleteUserPool", userPoolId);
-  return new Promise(function(resolve, reject) {
-    cognitoIdentityServiceProvider.deleteUserPool({
-      UserPoolId: userPoolId
-    }, function(err, data) {
-      if (err) {
-        return reject(err);
-      }
-      console.log("deleteUserPool -> %j", data);
-      return resolve(data);
-    });
+  const params = {
+    UserPoolId: userPoolId
+  };
+  return cognitoIdentityServiceProvider.deleteUserPool(params).promise()
+  .then(data => {
+    console.log("deleteUserPool -> %j", data);
+    return data;
   });
 }
 
 function deleteUserPoolClient(userPoolId, userPoolClientId) {
   console.log("deleteUserPoolClient", userPoolClientId);
-  return new Promise(function(resolve, reject) {
-    cognitoIdentityServiceProvider.deleteUserPoolClient({
-      UserPoolId: userPoolId,
-      ClientId: userPoolClientId,
-    }, function(err, data) {
-      if (err) {
-        return reject(err);
-      }
-      console.log("deleteUserPoolClient -> %j", data);
-      return resolve(data);
-    });
+  const params = {
+    UserPoolId: userPoolId,
+    ClientId: userPoolClientId,
+  };
+  return cognitoIdentityServiceProvider.deleteUserPoolClient(params).promise()
+  .then(data => {
+    console.log("deleteUserPoolClient -> %j", data);
+    return data;
   });
 }
 
 function deleteIdentityPool(identityPoolId) {
   console.log("deleteIdentityPool", identityPoolId);
-  return new Promise(function(resolve, reject) {
-    cognitoIdentity.deleteIdentityPool({
-      IdentityPoolId: identityPoolId,
-    }, function(err, data) {
-      if (err) {
-        return reject(err);
-      }
-      console.log("deleteIdentityPool -> %j", data);
-      return resolve(data);
-    });
+  const params = {
+    IdentityPoolId: identityPoolId,
+  };
+  return cognitoIdentity.deleteIdentityPool(params).promise()
+  .then(data => {
+    console.log("deleteIdentityPool -> %j", data);
+    return data;
   });
 }
 
 function deleteRole(roleName) {
-  var params = {
+  const params = {
     RoleName: roleName,
   };
-  return new Promise(function(resolve, reject) {
-    amazonIAM.deleteRole(params, function(err, data) {
-      if (err) {
-        return reject(err);
-      }
-      console.log("deleteRole -> %j", data);
-      return resolve(data);
-    });
+  return amazonIAM.deleteRole(params).promise()
+  .then(data => {
+    console.log("deleteRole -> %j", data);
+    return data;
   });
 }
 

@@ -25,7 +25,7 @@ function setupPools() {
 }
 
 function createUserPool() {
-  var params = {
+  const params = {
     // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CognitoIdentityServiceProvider.html#createUserPool-property
     PoolName: config.userPoolName,
     AliasAttributes: ['email'], // sign in with email ID: this is what cognito-auth supports currently; 'phone_number' is also interesting
@@ -44,21 +44,17 @@ function createUserPool() {
       }
     },
   };
-  return new Promise(function(resolve, reject) {
-    cognitoIdentityServiceProvider.createUserPool(params, function(err, data) {
-      if (err) {
-        return reject(err);
-      }
-      // console.log("createUserPool -> %j", data);
-      console.log("createUserPool -> id:", data.UserPool.Id);
-      settings.set('userPoolId', data.UserPool.Id);
-      return resolve(data);
-    });
+  return cognitoIdentityServiceProvider.createUserPool(params).promise()
+  .then(data => {
+    // console.log("createUserPool -> %j", data);
+    console.log("createUserPool -> id:", data.UserPool.Id);
+    settings.set('userPoolId', data.UserPool.Id);
+    return data;
   });
 }
 
 function createUserPoolClient() {
-  var params = {
+  const params = {
     // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CognitoIdentityServiceProvider.html#createUserPoolClient-property
     // in AWS console-speak, this is an "application" for a user pool; in API-speak, it's a "client"
     ClientName: config.appName,
@@ -69,21 +65,17 @@ function createUserPoolClient() {
     RefreshTokenValidity: 0, // days, default 30; see http://docs.aws.amazon.com/cognito/latest/developerguide/amazon-cognito-user-pools-using-tokens-with-identity-providers.html
     WriteAttributes: [], // required for profile maintenance
   };
-  return new Promise(function(resolve, reject) {
-    cognitoIdentityServiceProvider.createUserPoolClient(params, function(err, data) {
-      if (err) {
-        return reject(err);
-      }
-      console.log("createUserPoolClient -> %j", data);
-      console.log("createUserPoolClient -> id:", data.UserPoolClient.ClientId);
-      settings.set('applicationId', data.UserPoolClient.ClientId);
-      return resolve(data);
-    });
+  return cognitoIdentityServiceProvider.createUserPoolClient(params).promise()
+  .then(data => {
+    console.log("createUserPoolClient -> %j", data);
+    console.log("createUserPoolClient -> id:", data.UserPoolClient.ClientId);
+    settings.set('applicationId', data.UserPoolClient.ClientId);
+    return data;
   });
 }
 
 function createIdentityPool() {
-  var params = {
+  const params = {
     // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CognitoIdentity.html#createIdentityPool-property
     IdentityPoolName: config.poolName,
     CognitoIdentityProviders: [{
@@ -93,16 +85,12 @@ function createIdentityPool() {
     AllowUnauthenticatedIdentities: true, // required
     SupportedLoginProviders: {}, // no (external) federated login, for now
   };
-  return new Promise(function(resolve, reject) {
-    cognitoIdentity.createIdentityPool(params, function(err, data) {
-      if (err) {
-        return reject(err);
-      }
-      console.log("createIdentityPool -> %j", data);
-      console.log("createIdentityPool -> id:", data.IdentityPoolId);
-      settings.set('identityPoolId', data.IdentityPoolId);
-      return resolve(data);
-    });
+  return cognitoIdentity.createIdentityPool(params).promise()
+  .then(data => {
+    console.log("createIdentityPool -> %j", data);
+    console.log("createIdentityPool -> id:", data.IdentityPoolId);
+    settings.set('identityPoolId', data.IdentityPoolId);
+    return data;
   });
 }
 
@@ -126,21 +114,17 @@ function createAuthRole() {
     }]
   };
   var policyJson = JSON.stringify(policy, null, 2);
-  var params = {
+  const params = {
     // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/IAM.html#createRole-property
     RoleName: config.authRoleName,
     AssumeRolePolicyDocument: policyJson,
   };
-  return new Promise(function(resolve, reject) {
-    amazonIAM.createRole(params, function(err, data) {
-      if (err) {
-        return reject(err);
-      }
-      // console.log("createRole -> %j", data);
-      console.log("createRole -> arn:", data.Role.Arn);
-      settings.set('authRoleArn', data.Role.Arn);
-      return resolve(data);
-    });
+  return amazonIAM.createRole(params).promise()
+  .then(data => {
+    // console.log("createRole -> %j", data);
+    console.log("createRole -> arn:", data.Role.Arn);
+    settings.set('authRoleArn', data.Role.Arn);
+    return data;
   });
 }
 
@@ -164,26 +148,22 @@ function createUnauthRole() {
     }]
   };
   var policyJson = JSON.stringify(policy, null, 2);
-  var params = {
+  const params = {
     // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/IAM.html#createRole-property
     RoleName: config.unauthRoleName,
     AssumeRolePolicyDocument: policyJson,
   };
-  return new Promise(function(resolve, reject) {
-    amazonIAM.createRole(params, function(err, data) {
-      if (err) {
-        return reject(err);
-      }
-      // console.log("createRole -> %j", data);
-      console.log("createRole -> arn:", data.Role.Arn);
-      settings.set('unauthRoleArn', data.Role.Arn);
-      return resolve(data);
-    });
+  return amazonIAM.createRole(params).promise()
+  .then(data => {
+    // console.log("createRole -> %j", data);
+    console.log("createRole -> arn:", data.Role.Arn);
+    settings.set('unauthRoleArn', data.Role.Arn);
+    return data;
   });
 }
 
 function attachRoles() {
-  var params = {
+  const params = {
     // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CognitoIdentity.html#setIdentityPoolRoles-property
     IdentityPoolId: settings.get('identityPoolId'),
     Roles: {
@@ -191,14 +171,10 @@ function attachRoles() {
       unauthenticated: settings.get('unauthRoleArn'),
     }
   };
-  return new Promise(function(resolve, reject) {
-    cognitoIdentity.setIdentityPoolRoles(params, function(err, data) {
-      if (err) {
-        return reject(err);
-      }
-      console.log("setIdentityPoolRoles -> %j", data);
-      return resolve(data);
-    });
+  return cognitoIdentity.setIdentityPoolRoles(params).promise()
+  .then (data => {
+    console.log("setIdentityPoolRoles -> %j", data);
+    return data;
   });
 }
 

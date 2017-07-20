@@ -24,8 +24,8 @@ function teardownBuckets() {
 }
 
 function deleteBucket() {
-  // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#deleteBucket-property
   const params = {
+    // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#deleteBucket-property
     Bucket: settings.get('bucketName'),
   };
   return s3.deleteBucket(params).promise()
@@ -36,9 +36,9 @@ function deleteBucket() {
 }
 
 function deleteFiles() {
-  // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#deleteObjects-property
-  // note that deleteObjects() does not take '*' as Key
   const params = {
+    // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#deleteObjects-property
+    // note that deleteObjects() does not take '*' as Key
     Bucket: settings.get('bucketName'),
     Delete: {
       Objects: [{
@@ -55,8 +55,8 @@ function deleteFiles() {
 }
 
 function deletePolicy(policyArn) {
-  // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/IAM.html#deletePolicy-property
-  var params = {
+  const params = {
+    // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/IAM.html#deletePolicy-property
     PolicyArn: policyArn,
   };
   return amazonIAM.deletePolicy(params).promise()
@@ -67,8 +67,8 @@ function deletePolicy(policyArn) {
 }
 
 function detachBucketPolicyFromAuthRole() {
-  // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/IAM.html#detachRolePolicy-property
-  var params = {
+  const params = {
+    // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/IAM.html#detachRolePolicy-property
     RoleName: config.authRoleName,
     PolicyArn: settings.get('bucketAuthPolicyArn'),
   };

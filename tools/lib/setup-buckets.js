@@ -23,8 +23,8 @@ function setupBuckets() {
 }
 
 function createBucket() {
-  // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#createBucket-property
-  var params = {
+  const params = {
+    // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#createBucket-property
     Bucket: config.bucketName,
     CreateBucketConfiguration: {
       LocationConstraint: config.region,
@@ -38,8 +38,8 @@ function createBucket() {
 }
 
 function attachCORSToBucket() {
-  // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putBucketCors-property
-  var params = {
+  const params = {
+    // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putBucketCors-property
     Bucket: config.bucketName,
     CORSConfiguration: {
       CORSRules: [{
@@ -74,8 +74,8 @@ function createWriteBucketPolicy() {
     }]
   };
   var policyJson = JSON.stringify(policy, null, 2);
-  // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/IAM.html#createPolicy-property
-  var params = {
+  const params = {
+    // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/IAM.html#createPolicy-property
     PolicyName: config.authBucketPolicyName,
     Description: 'Write to bucket',
     PolicyDocument: policyJson,
@@ -90,7 +90,7 @@ function createWriteBucketPolicy() {
 }
 
 function attachWriteBucketPolicyToAuthRole() {
-  var params = {
+  const params = {
     // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/IAM.html#attachRolePolicy-property
     RoleName: config.authRoleName,
     PolicyArn: settings.get('bucketAuthPolicyArn'),
