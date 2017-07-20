@@ -27,4 +27,4 @@ exports.authRoleName = 'CognitoAuthTest-AuthRole';
 exports.unauthRoleName = 'CognitoAuthTest-UnauthRole';
 
 exports.authBucketPolicyName = exports.authRoleName + '-WriteBucket';
-exports.uploadFIleName = 'file.pdf';
+exports.uploadFileName = 'file.pdf';

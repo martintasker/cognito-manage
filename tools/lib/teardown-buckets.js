@@ -11,18 +11,12 @@ var settings = require('./settings');
 
 AWS.config.region = config.region;
 
-var bucket = new AWS.S3({
-  params: {
-    Bucket: settings.get('bucketName'),
-    region: config.region,
-  }
-});
-
+const s3 = new AWS.S3();
 const amazonIAM = new AWS.IAM();
 
 function teardownBuckets() {
   return Promise.resolve()
-  .then(() => detachBucketPolicyFromAuthRole(settings.get('bucketAuthPolicyArn')))
+  .then(detachBucketPolicyFromAuthRole)
   .then(() => deletePolicy(settings.get('bucketAuthPolicyArn')))
   .then(deleteFiles)
   .then(deleteBucket)
@@ -30,65 +24,58 @@ function teardownBuckets() {
 }
 
 function deleteBucket() {
-  return new Promise(function(resolve, reject) {
-    bucket.deleteBucket(function(err, data) {
-      if (err) {
-        return reject(err);
-      }
-      console.log("deleteBucket -> %j", data);
-      return resolve(data);
-    });
+  // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#deleteBucket-property
+  const params = {
+    Bucket: settings.get('bucketName'),
+  };
+  return s3.deleteBucket(params).promise()
+  .then(data => {
+    console.log("deleteBucket -> %j", data);
+    return data;
   });
 }
 
 function deleteFiles() {
-  return new Promise(function(resolve, reject) {
-    // note that deleteObjects() does not take '*' as Key
-    bucket.deleteObjects({
-      Delete: {
-        Objects: [{
-          Key: config.uploadFIleName,
-        }],
-        Quiet: true,
-      }
-    }, function(err, data) {
-      if (err) {
-        return reject(err);
-      }
-      console.log("deleteObjects -> %j", data);
-      return resolve(data);
-    });
+  // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#deleteObjects-property
+  // note that deleteObjects() does not take '*' as Key
+  const params = {
+    Bucket: settings.get('bucketName'),
+    Delete: {
+      Objects: [{
+        Key: config.uploadFileName,
+      }],
+      Quiet: true,
+    }
+  };
+  return s3.deleteObjects(params).promise()
+  .then(data => {
+    console.log("deleteObjects -> %j", data);
+    return data;
   });
 }
 
 function deletePolicy(policyArn) {
+  // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/IAM.html#deletePolicy-property
   var params = {
     PolicyArn: policyArn,
   };
-  return new Promise(function(resolve, reject) {
-    amazonIAM.deletePolicy(params, function(err, data) {
-      if (err) {
-        return reject(err);
-      }
-      console.log("deletePolicy -> %j", data);
-      return resolve(data);
-    });
+  return amazonIAM.deletePolicy(params).promise()
+  .then(data => {
+    console.log("deletePolicy -> %j", data);
+    return data;
   });
 }
 
-function detachBucketPolicyFromAuthRole(policyArn) {
+function detachBucketPolicyFromAuthRole() {
+  // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/IAM.html#detachRolePolicy-property
   var params = {
     RoleName: config.authRoleName,
-    PolicyArn: policyArn,
+    PolicyArn: settings.get('bucketAuthPolicyArn'),
   };
-  return new Promise(function(resolve, reject) {
-    amazonIAM.detachRolePolicy(params, function(err, data) {
-      if (err) {
-        return reject(err);
-      }
-      console.log("detachRolePolicy -> %j", data);
-      return resolve(data);
-    });
+  return amazonIAM.detachRolePolicy(params).promise()
+  .then(data => {
+    console.log("detachRolePolicy -> %j", data);
+    return data;
   });
 }
 
