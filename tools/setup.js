@@ -9,6 +9,7 @@ parser.addArgument(['-p', '--pools'], {
   help: 'construct user pools',
 });
 parser.addArgument(['-b', '--bucket'], {
+  nargs: 0,
   help: 'construct named bucket and set up permissions',
 });
 parser.addArgument(['-d', '--dry-run'], {
@@ -31,7 +32,7 @@ Promise.resolve()
 })
 .then(function() {
   if (args.bucket) {
-    return setupBuckets(args.bucket);
+    return setupBuckets();
   } else {
     return Promise.resolve();
   }

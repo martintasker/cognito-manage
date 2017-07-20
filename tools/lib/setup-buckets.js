@@ -13,19 +13,19 @@ var bucket = null;
 
 var amazonIAM = new AWS.IAM();
 
-function setupBuckets(bucketName) {
-  settings.set('bucketName', bucketName);
+function setupBuckets() {
+  settings.set('bucketName', config.bucketName);
   bucket = new AWS.S3({
     params: {
-      Bucket: bucketName,
+      Bucket: config.bucketName,
       region: config.region,
     }
   });
   return Promise.resolve()
   .then(createBucket)
   .then(attachCORSToBucket)
-  .then(createBucketPolicy)
-  .then(attachBucketPolicyToAuthRole)
+  .then(createWriteBucketPolicy)
+  .then(attachWriteBucketPolicyToAuthRole)
   ;
 }
 
@@ -66,7 +66,7 @@ function attachCORSToBucket() {
   });
 }
 
-function createBucketPolicy() {
+function createWriteBucketPolicy() {
   var policy = {
     Version: "2012-10-17",
     Statement: [{
@@ -101,7 +101,7 @@ function createBucketPolicy() {
   });
 }
 
-function attachBucketPolicyToAuthRole() {
+function attachWriteBucketPolicyToAuthRole() {
   var params = {
     // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/IAM.html#attachRolePolicy-property
     RoleName: config.authRoleName,
