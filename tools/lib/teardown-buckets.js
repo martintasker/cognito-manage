@@ -18,19 +18,14 @@ var bucket = new AWS.S3({
   }
 });
 
-var amazonIAM = new AWS.IAM();
+const amazonIAM = new AWS.IAM();
 
 function teardownBuckets() {
   return Promise.resolve()
-    .then(function() {
-      return detachBucketPolicyFromAuthRole(settings.get('bucketAuthPolicyArn'));
-    })
-    .then(function() {
-      return deletePolicy(settings.get('bucketAuthPolicyArn'));
-    })
-    .then(deleteFiles)
-    .then(deleteBucket)
-
+  .then(() => detachBucketPolicyFromAuthRole(settings.get('bucketAuthPolicyArn')))
+  .then(() => deletePolicy(settings.get('bucketAuthPolicyArn')))
+  .then(deleteFiles)
+  .then(deleteBucket)
   ;
 }
 

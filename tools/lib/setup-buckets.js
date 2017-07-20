@@ -9,18 +9,10 @@ var settings = require('./settings');
 
 AWS.config.region = config.region;
 
-var bucket = null;
-
-var amazonIAM = new AWS.IAM();
+const s3 = new AWS.S3();
+const amazonIAM = new AWS.IAM();
 
 function setupBuckets() {
-  settings.set('bucketName', config.bucketName);
-  bucket = new AWS.S3({
-    params: {
-      Bucket: config.bucketName,
-      region: config.region,
-    }
-  });
   return Promise.resolve()
   .then(createBucket)
   .then(attachCORSToBucket)
@@ -30,8 +22,16 @@ function setupBuckets() {
 }
 
 function createBucket() {
+  settings.set('bucketName', config.bucketName);
+  // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#createBucket-property
+  var params = {
+    Bucket: config.bucketName,
+    CreateBucketConfiguration: {
+      LocationConstraint: config.region,
+    },
+  };
   return new Promise(function(resolve, reject) {
-    bucket.createBucket(function(err, data) {
+    s3.createBucket(params, function(err, data) {
       if (err) {
         return reject(err);
       }
@@ -44,7 +44,7 @@ function createBucket() {
 function attachCORSToBucket() {
   // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#putBucketCors-property
   var params = {
-    // Bucket: (required value, given to S3 constructor)
+    Bucket: config.bucketName,
     CORSConfiguration: {
       CORSRules: [{
         AllowedMethods: ['GET', 'PUT', 'POST'],
@@ -56,7 +56,7 @@ function attachCORSToBucket() {
     }
   };
   return new Promise(function(resolve, reject) {
-    bucket.putBucketCors(params, function(err, data) {
+    s3.putBucketCors(params, function(err, data) {
       if (err) {
         return reject(err);
       }
