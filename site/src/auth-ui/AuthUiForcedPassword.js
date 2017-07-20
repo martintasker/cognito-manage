@@ -6,7 +6,7 @@ import actions from '../app.actions';
 const mapStateToProps = (state) => {
   return {
     username: state.getIn(['authUser', 'username']),
-    isChallengedNewPassword: state.getIn(['authUi', 'authState']) === 'challengedNewPassword',
+    isForcingNewPassword: state.getIn(['authUi', 'authState']) === 'forceNewPassword',
     cognitoAuth: state.getIn(['authUser', 'session']),
   };
 };
@@ -72,12 +72,12 @@ class AuthUiForcedPassword extends Component {
   }
 
   render() {
-    const {username, isChallengedNewPassword} = this.props;
+    const {username, isForcingNewPassword} = this.props;
     const {password1, password2, pending} = this.state;
 
     return (
       <form>
-        <fieldset disabled={!isChallengedNewPassword || pending}>
+        <fieldset disabled={!isForcingNewPassword || pending}>
           <div className="form-group">
             <input type="text" value={username} disabled/>
             <input type="password" placeholder="Password" required value={password1} onChange={this.setPassword1}/>
