@@ -26,5 +26,8 @@ exports.poolName = 'CognitoAuthTestIdentityPool';
 exports.authRoleName = 'CognitoAuthTest-AuthRole';
 exports.unauthRoleName = 'CognitoAuthTest-UnauthRole';
 
+exports.bucketName = 'bucket.example.com';
 exports.authBucketPolicyName = exports.authRoleName + '-WriteBucket';
-exports.uploadFileName = 'file.pdf';
+exports.uploadFileName = 'data/*'; // todo: sanitize
+
+exports.authTablePolicyName = exports.authRoleName + '-WriteTable';
