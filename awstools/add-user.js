@@ -2,7 +2,7 @@
 
 var AWS = require('aws-sdk');
 
-var config = require('./lib/config');
+var config = require('./config/config');
 var settings = require('./lib/settings');
 
 AWS.config.region = config.region;

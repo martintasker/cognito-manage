@@ -6,13 +6,15 @@ const yaml = require('js-yaml');
 
 var AWS = require('aws-sdk');
 
-var config = require('./config');
+var config = require('../config/config');
 var settings = require('./settings');
 
 AWS.config.region = config.region;
 
 const db = new AWS.DynamoDB();
 const amazonIAM = new AWS.IAM();
+
+const SCHEMA_PATH = path.resolve(__dirname, '../config/');
 
 function setupTables() {
   return Promise.resolve()
@@ -24,11 +26,11 @@ function setupTables() {
 
 function getSchemaFilenames() {
   return new Promise((resolve, reject) => {
-    fs.readdir(path.resolve(__dirname, '../schema'), (err, data) => {
+    fs.readdir(SCHEMA_PATH, (err, data) => {
       if (err) {
         return reject(err);
       }
-      resolve(data.filter(fn => path.extname(fn) === '.yaml').map(fn => path.resolve(__dirname, '../schema', fn)));
+      resolve(data.filter(fn => path.extname(fn) === '.yaml').map(fn => path.resolve(SCHEMA_PATH, fn)));
     });
   });
 }
