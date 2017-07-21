@@ -36,7 +36,7 @@ Promise.resolve()
   }
 })
 .then(function() {
-  if (args.bucket) {
+  if (args.buckets) {
     return setupBuckets();
   } else {
     return Promise.resolve();

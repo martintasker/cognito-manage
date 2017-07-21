@@ -2,6 +2,7 @@
 
 'HANDLE WITH CARE: if you use this after you\'ve set up and got users, then you\'ll delete them and their data!!';
 
+var teardownTables = require('./lib/teardown-tables');
 var teardownBuckets = require('./lib/teardown-buckets');
 var teardownPools = require('./lib/teardown-pools');
 
@@ -10,9 +11,13 @@ parser.addArgument(['-p', '--pools'], {
   nargs: 0,
   help: 'tear down user pools',
 });
-parser.addArgument(['-b', '--bucket'], {
+parser.addArgument(['-b', '--buckets'], {
   nargs: 0,
-  help: 'tear down bucket',
+  help: 'tear down buckets',
+});
+parser.addArgument(['-t', '--tables'], {
+  nargs: 0,
+  help: 'tear down tables',
 });
 parser.addArgument(['-d', '--dry-run'], {
   nargs: 0,
@@ -26,7 +31,14 @@ if (args.dry_run) {
 
 Promise.resolve()
 .then(function() {
-  if (args.bucket) {
+  if (args.tables) {
+    return teardownTables();
+  } else {
+    return Promise.resolve();
+  }
+})
+.then(function() {
+  if (args.buckets) {
     return teardownBuckets();
   } else {
     return Promise.resolve();
