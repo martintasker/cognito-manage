@@ -31,3 +31,4 @@ exports.authBucketPolicyName = exports.authRoleName + '-WriteBucket';
 exports.uploadFileName = 'data/*'; // todo: sanitize
 
 exports.authTablePolicyName = exports.authRoleName + '-WriteTable';
+exports.unauthTablePolicyName = exports.authRoleName + '-ReadTable';

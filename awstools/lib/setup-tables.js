@@ -23,6 +23,8 @@ function setupTables() {
   .then(createDynamoTables)
   .then(createWritePolicy)
   .then(attachWritePolicyToAuthRole)
+  .then(createReadPolicy)
+  .then(attachReadPolicyToUnauthRole)
   ;
 }
 
@@ -88,6 +90,50 @@ function attachWritePolicyToAuthRole() {
   const params = {
     RoleName: config.authRoleName,
     PolicyArn: settings.get('authTablePolicyArn'),
+  };
+  return amazonIAM.attachRolePolicy(params).promise()
+  .then(data => {
+    console.log("attachRolePolicy -> %j", data);
+    return data;
+  });
+}
+
+function createReadPolicy() {
+  const tableNames = settings.get('tableNames');
+  const tableARNs = tableNames.map(tableName => settings.get('tables.' + tableName));
+  var policy = {
+    Version: "2012-10-17",
+    Statement: [{
+      Effect: "Allow",
+      Action: [
+        "dynamodb:BatchGetItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:GetItem",
+      ],
+      Resource: tableARNs,
+    }]
+  };
+  var policyJson = JSON.stringify(policy, null, 2);
+  const params = {
+    PolicyName: config.unauthTablePolicyName,
+    Description: 'Read tables',
+    PolicyDocument: policyJson,
+  };
+  return amazonIAM.createPolicy(params).promise()
+  .then(data => {
+    console.log("createPolicy -> %j", data);
+    console.log("createPolicy -> arn:", data.Policy.Arn);
+    settings.set('unauthTablePolicyArn', data.Policy.Arn);
+    return data;
+  });
+}
+
+function attachReadPolicyToUnauthRole() {
+  const params = {
+    RoleName: config.unauthRoleName,
+    PolicyArn: settings.get('unauthTablePolicyArn'),
   };
   return amazonIAM.attachRolePolicy(params).promise()
   .then(data => {

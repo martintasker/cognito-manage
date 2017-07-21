@@ -16,6 +16,7 @@ const deletePolicy = require('./delete-policy');
 
 function teardownTables() {
   return Promise.resolve()
+  .then(() => deletePolicy(settings.get('unauthTablePolicyArn')))
   .then(() => deletePolicy(settings.get('authTablePolicyArn')))
   .then(deleteTables)
   ;
