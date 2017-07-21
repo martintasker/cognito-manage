@@ -3,8 +3,8 @@
 Aim:
 
 * Cognito authentication with a number of interesting scenarios
-* React-based demo code, client-side (in `site/`)
-* node-based admin code, from command-line (in `tools/`)
+* React-based demo code, client-side
+* node-based admin code, from command-line (in `awstools/`)
 
 Current state of play:
 
@@ -61,7 +61,7 @@ and client-side code has been migrated to React.
 
 Assuming you have an installation of the AWS CLI with
 developer keys suitable for your project, then,
-from the `tools/` directory,
+from the `awstools/` directory,
 
 * `npm install`
 * copy `lib/config.sample.js` to `lib/config.js` and edit, to carefully specify the relevant parameters
@@ -70,7 +70,7 @@ from the `tools/` directory,
 * run `node add-user -u xxx -e xxx@example.com` to create a user:
   the email you specify will receive a password which you'll need on first login
 
-Then, from `site/`,
+Then, from the root folder,
 
 * `npm install`
 * note that `src/aws-config.js` contains the configuration parameters built by the `setup` phase above,
@@ -80,7 +80,7 @@ Then, from `site/`,
 * complete the new password in the forced-password form
 * you can then log out, deregister, log in, and manage forgotten password
 
-Back in `tools/`:
+Back in `awstools/`:
 
 * run `node query` to query the pools and user
 * run `node add-user` to add more users, any time
@@ -88,7 +88,7 @@ Back in `tools/`:
 
 Now that you know you have user+identity pools which work,
 you can lift and shift them into your own application:
-you will need, from `site/src/`,
+you will need, from `src/`,
 
 * the JavaScript code in `cognito-auth/`, as-is
 * `aws-config.js` and `settings.json`

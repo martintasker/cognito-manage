@@ -4,7 +4,7 @@ var fs = require('fs');
 var path = require('path');
 
 var settings = {};
-var SETTINGS_FILE = path.join(__dirname, '../../site/src/settings.json');
+var SETTINGS_FILE = path.join(__dirname, '../../src/settings.json');
 
 function load() {
   try {
