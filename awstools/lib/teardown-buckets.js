@@ -14,9 +14,10 @@ AWS.config.region = config.region;
 const s3 = new AWS.S3();
 const amazonIAM = new AWS.IAM();
 
+const deletePolicy = require('./delete-policy');
+
 function teardownBuckets() {
   return Promise.resolve()
-  .then(detachBucketPolicyFromAuthRole)
   .then(() => deletePolicy(settings.get('bucketAuthPolicyArn')))
   .then(deleteFiles)
   .then(deleteBucket)
@@ -50,31 +51,6 @@ function deleteFiles() {
   return s3.deleteObjects(params).promise()
   .then(data => {
     console.log("deleteObjects -> %j", data);
-    return data;
-  });
-}
-
-function deletePolicy(policyArn) {
-  const params = {
-    // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/IAM.html#deletePolicy-property
-    PolicyArn: policyArn,
-  };
-  return amazonIAM.deletePolicy(params).promise()
-  .then(data => {
-    console.log("deletePolicy -> %j", data);
-    return data;
-  });
-}
-
-function detachBucketPolicyFromAuthRole() {
-  const params = {
-    // see http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/IAM.html#detachRolePolicy-property
-    RoleName: config.authRoleName,
-    PolicyArn: settings.get('bucketAuthPolicyArn'),
-  };
-  return amazonIAM.detachRolePolicy(params).promise()
-  .then(data => {
-    console.log("detachRolePolicy -> %j", data);
     return data;
   });
 }
