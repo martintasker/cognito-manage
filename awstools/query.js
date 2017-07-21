@@ -9,10 +9,12 @@ AWS.config.region = config.region;
 
 const cognitoIdentity = new AWS.CognitoIdentity();
 const cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();
+const db = new AWS.DynamoDB();
 
 Promise.resolve()
 .then(queryIdentityPoolRoles)
 .then(queryUsers)
+.then(queryTables)
 .catch(function(reason) {
   console.error("problem: %j", reason);
 });
@@ -39,4 +41,16 @@ function queryUsers() {
     console.log("listUsers -> %j", data);
     return data;
   });
+}
+
+function queryTables() {
+  const tableNames = settings.get('tableNames');
+  console.log("tables: %j", tableNames);
+  return tableNames.reduce((inChain, tableName) => {
+    return inChain
+    .then(() => db.describeTable({TableName: tableName}).promise())
+    .then(data => {
+      console.log("describeTable -> %j", data);
+    });
+  }, Promise.resolve());
 }
