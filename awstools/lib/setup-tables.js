@@ -21,6 +21,8 @@ function setupTables() {
   .then(getSchemaFilenames)
   .then(saveTableNames)
   .then(createDynamoTables)
+  .then(createWritePolicy)
+  .then(attachWritePolicyToAuthRole)
   ;
 }
 
@@ -52,6 +54,46 @@ function createDynamoTables(schemas) {
       });
     });
   }, Promise.resolve());
+}
+
+function createWritePolicy() {
+  const tableNames = settings.get('tableNames');
+  const tableARNs = tableNames.map(tableName => settings.get('tables.' + tableName));
+  var policy = {
+    Version: "2012-10-17",
+    Statement: [{
+      Effect: "Allow",
+      Action: [
+        "dynamodb:*",
+      ],
+      Resource: tableARNs,
+    }]
+  };
+  var policyJson = JSON.stringify(policy, null, 2);
+  const params = {
+    PolicyName: config.authTablePolicyName,
+    Description: 'Update tables',
+    PolicyDocument: policyJson,
+  };
+  return amazonIAM.createPolicy(params).promise()
+  .then(data => {
+    console.log("createPolicy -> %j", data);
+    console.log("createPolicy -> arn:", data.Policy.Arn);
+    settings.set('authTablePolicyArn', data.Policy.Arn);
+    return data;
+  });
+}
+
+function attachWritePolicyToAuthRole() {
+  const params = {
+    RoleName: config.authRoleName,
+    PolicyArn: settings.get('authTablePolicyArn'),
+  };
+  return amazonIAM.attachRolePolicy(params).promise()
+  .then(data => {
+    console.log("attachRolePolicy -> %j", data);
+    return data;
+  });
 }
 
 module.exports = setupTables;
