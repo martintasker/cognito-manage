@@ -43,7 +43,7 @@ function attachCORSToBucket() {
     Bucket: config.bucketName,
     CORSConfiguration: {
       CORSRules: [{
-        AllowedMethods: ['GET', 'PUT', 'POST'],
+        AllowedMethods: ['GET', 'PUT', 'POST', 'DELETE'],
         AllowedOrigins: ['*'],
         AllowedHeaders: ['*'],
         ExposeHeaders: ['ETag', 'x-amz-meta-custom-header'],
